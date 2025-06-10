@@ -1,151 +1,714 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>💥给王艳勤小公主的专属烟花🎆</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#000000">
-    <link rel="shortcut icon" type="image/png"
-        href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/329180/firework-burst-icon-v2.png">
-    <link rel="icon" type="image/png"
-        href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/329180/firework-burst-icon-v2.png">
-    <link rel="apple-touch-icon-precomposed"
-        href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/329180/firework-burst-icon-v2.png">
-    <meta name="msapplication-TileColor" content="#000000">
-    <meta name="msapplication-TileImage"
-        content="https://s3-us-west-2.amazonaws.com/s.cdpn.io/329180/firework-burst-icon-v2.png">
-    <link rel="stylesheet" href="./css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上海大学生家教信息平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
-        .canvas-container {
-            /* background-image: url("https://up.tt98.com/edpic/c7/ce/c4/c7cec402d263306f4f7b5969ee981549.jpg"); */
-            background-size: cover;
-            background-position: center;
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --success-color: #2ecc71;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .banner {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .banner p {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        .stat-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+        }
+        
+        .filters-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .filter-group {
+            margin-bottom: 20px;
+        }
+        
+        .filter-group h3 {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .filter-group h3 i {
+            color: var(--primary-color);
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .search-box {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        
+        .search-box button {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        
+        .orders-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .order-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #eee;
+        }
+        
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px;
+        }
+        
+        .card-header h3 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .order-id {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .card-content {
+            padding: 15px;
+        }
+        
+        .order-detail {
+            margin-bottom: 12px;
+            display: flex;
+        }
+        
+        .detail-icon {
+            width: 24px;
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+        
+        .detail-text {
+            flex: 1;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .salary {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        .salary span {
+            font-size: 1rem;
+            color: #7f8c8d;
+        }
+        
+        .contact-btn {
+            background-color: var(--success-color);
+        }
+        
+        .contact-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .no-results i {
+            font-size: 3rem;
+            color: #bdc3c7;
+            margin-bottom: 15px;
+        }
+        
+        .loader {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(52, 152, 219, 0.2);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters-section {
+                position: static;
+            }
+        }
+        
+        @media (max-width: 500px) {
+            .orders-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header {
+                padding: 15px;
+            }
+            
+            h1 {
+                fontSize: 2rem;
+            }
         }
     </style>
-    <script src="./js/jquery.min.js"
-        type="text/javascript"></script>
-    <script>
-        var shouci = true;
-        console.log(shouci);
-        function bodyPlayMusic() {
-            if (shouci) {
-                shouci = false;
-                audio.play();
-                console.log(shouci);
-            }
-        };
-
-    </script>
 </head>
-
 <body>
-
-    <!-- clickMusic() -->
-    <img id="music_ico" onclick="" alt="" style=" display: inline; float: right;  ">
-
-    <audio id="audioDom" src="https://ws.stream.qqmusic.qq.com/M500002LF6DJ1JTubm.mp3?guid=4220211900&vkey=954FCB911EE8FF3DA962442A2CCD7A1A81A71B2C7B2FFE5A7CF5CE7FCA1B0C4B40EE98DE9C076A9E9C4B019E3303271703E359E0B54073BC&uin=&fromtag=123042" preload="auto"
-        loop="loop"></audio>
-
-    <div id="yhBtn"
-        style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:999;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#fff ; font-size:15px">
-        <p>💥点爆</p>
-        <img style="width:64px;margin-bottom:24px "
-            src="https://p9.toutiaoimg.com/img/tos-cn-i-qvj2lq49k0/060990dac854444ab7a927b5b3311fe4~tplv-tt-shrink:640:0.image">
-
-    </div>
-
-    <!-- App -->
     <div class="container">
-        <div class="loading-init">
-            <div class="loading-init__header"></div>
-            <div class="loading-init__status"></div>
-        </div>
-        <div class="stage-container remove">
-            <div class="page_two hide">
-                <div class="type_words" id="contents"></div>
+        <header>
+            <h1>上海大学生家教信息平台</h1>
+            <div class="banner">
+                <p><i class="fas fa-info-circle"></i> 暑期上海很缺大学生，欢迎同学们留沪接单哦，基本上随便挑哈~~</p>
+                <p id="current-date"></p>
             </div>
-            <div class="canvas-container">
-                <canvas id="trails-canvas"></canvas>
-                <canvas id="main-canvas"></canvas>
-                <canvas id="snow-canvas" style="opacity: 0.5;"></canvas>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="total-orders">0</div>
+                    <div>总单量</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="today-orders">0</div>
+                    <div>今日新增</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="available-orders">0</div>
+                    <div>可接单量</div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <div class="filters-section">
+                <div class="search-box">
+                    <input type="text" id="order-search" placeholder="输入单号、科目或区域搜索">
+                    <button onclick="searchOrders()"><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="filter-group">
+                    <h3><i class="fas fa-location-dot"></i> 辅导区域</h3>
+                    <select id="district-filter">
+                        <option value="">全部区域</option>
+                        <option value="黄浦区">黄浦区</option>
+                        <option value="徐汇区">徐汇区</option>
+                        <option value="长宁区">长宁区</option>
+                        <option value="静安区">静安区</option>
+                        <option value="普陀区">普陀区</option>
+                        <option value="虹口区">虹口区</option>
+                        <option value="杨浦区">杨浦区</option>
+                        <option value="浦东新区">浦东新区</option>
+                        <option value="闵行区">闵行区</option>
+                        <option value="宝山区">宝山区</option>
+                        <option value="嘉定区">嘉定区</option>
+                        <option value="金山区">金山区</option>
+                        <option value="松江区">松江区</option>
+                        <option value="青浦区">青浦区</option>
+                        <option value="奉贤区">奉贤区</option>
+                        <option value="崇明区">崇明区</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <h3><i class="fas fa-user-graduate"></i> 年级</h3>
+                    <select id="grade-filter">
+                        <option value="">全部年级</option>
+                        <option value="幼儿">幼儿</option>
+                        <option value="小学">小学</option>
+                        <option value="初中">初中</option>
+                        <option value="高中">高中</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <h3><i class="fas fa-book"></i> 辅导科目</h3>
+                    <select id="subject-filter">
+                        <option value="">全部科目</option>
+                        <option value="语文">语文</option>
+                        <option value="数学">数学</option>
+                        <option value="英语">英语</option>
+                        <option value="物理">物理</option>
+                        <option value="化学">化学</option>
+                        <option value="生物">生物</option>
+                        <option value="历史">历史</option>
+                        <option value="地理">地理</option>
+                        <option value="政治">政治</option>
+                        <option value="信息技术">信息技术</option>
+                        <option value="乐器">乐器</option>
+                        <option value="科学">科学</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <h3><i class="fas fa-laptop"></i> 教学方式</h3>
+                    <select id="method-filter">
+                        <option value="">全部方式</option>
+                        <option value="线上">线上</option>
+                        <option value="线下">线下</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <h3><i class="fas fa-sort"></i> 排序方式</h3>
+                    <select id="sort-filter">
+                        <option value="newest">最新发布</option>
+                        <option value="salary-high">薪资最高</option>
+                        <option value="salary-low">薪资最低</option>
+                    </select>
+                </div>
+                
+                <button onclick="applyFilters()"><i class="fas fa-filter"></i> 应用筛选</button>
+                <button onclick="resetFilters()" style="margin-top: 10px; background-color: #95a5a6;"><i class="fas fa-redo"></i> 重置筛选</button>
+            </div>
+            
+            <div class="orders-section">
+                <div class="orders-grid" id="orders-container">
+                    <div class="loader">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- partial -->
-    <script type="text/javascript" src="./js/common.js"></script>
-    <script type="text/javascript" src="./js/script.js"></script>
-    <script type="text/javascript">
-
-        function musicPlay(isPlay) {
-            var media = document.querySelector('#audioDom');
-            if (isPlay && media.paused) {
-                media.play();
+    <script>
+        // 全局变量
+        let allOrders = [];
+        let filteredOrders = [];
+        
+        // 上海所有行政区
+        const shanghaiDistricts = [
+            '黄浦区', '徐汇区', '长宁区', '静安区', '普陀区', 
+            '虹口区', '杨浦区', '浦东新区', '闵行区', '宝山区', 
+            '嘉定区', '金山区', '松江区', '青浦区', '奉贤区', '崇明区'
+        ];
+        
+        // 年级选项
+        const grades = ['幼儿', '小学', '初中', '高中'];
+        
+        // 科目选项
+        const subjects = [
+            '语文', '数学', '英语', '物理', '化学', 
+            '生物', '历史', '地理', '政治', '信息技术', 
+            '乐器', '科学'
+        ];
+        
+        // 初始化函数
+        async function init() {
+            // 设置当前日期
+            setCurrentDate();
+            
+            // 从GitHub加载数据
+            await loadDataFromGitHub();
+            
+            // 应用初始筛选
+            applyFilters();
+        }
+        
+        // 设置当前日期
+        function setCurrentDate() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                weekday: 'long' 
+            };
+            document.getElementById('current-date').textContent = now.toLocaleDateString('zh-CN', options);
+        }
+        
+        // 从GitHub加载数据
+        async function loadDataFromGitHub() {
+            try {
+                // 使用相对路径加载Excel文件
+                const excelUrl = '111.xlsx';
+                
+                const response = await fetch(excelUrl);
+                if (!response.ok) throw new Error('网络响应不正常');
+                
+                const arrayBuffer = await response.arrayBuffer();
+                const data = new Uint8Array(arrayBuffer);
+                const workbook = XLSX.read(data, { type: 'array' });
+                
+                // 获取第一个工作表
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                
+                // 将工作表转换为JSON
+                const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                
+                // 处理数据
+                allOrders = jsonData.map(order => {
+                    // 确保数据有必要的字段
+                    if (!order.id) {
+                        // 生成唯一ID (时间戳+随机数)
+                        order.id = 'T' + Date.now() + Math.floor(Math.random() * 100);
+                    }
+                    
+                    return {
+                        id: order.id || '',
+                        teachingMethod: order.teachingMethod || '',
+                        district: order.district || '',
+                        address: order.address || '',
+                        grade: order.grade || '',
+                        subject: order.subject || '',
+                        studentInfo: order.studentInfo || '',
+                        time: order.time || '',
+                        teacherRequirement: order.teacherRequirement || '',
+                        salary: order.salary || 0,
+                        contact: order.contact || '',
+                        phone: order.phone || '',
+                        createdDate: order.createdDate || new Date().toISOString().split('T')[0]
+                    };
+                });
+                
+                // 更新统计数据
+                updateStatistics();
+                
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                document.getElementById('orders-container').innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>数据加载失败</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
             }
-            if (!isPlay && !media.paused) {
-                media.pause();
+        }
+        
+        // 更新统计数据
+        function updateStatistics() {
+            const today = new Date().toISOString().split('T')[0];
+            const todayOrders = allOrders.filter(order => order.createdDate === today).length;
+            
+            document.getElementById('total-orders').textContent = allOrders.length;
+            document.getElementById('today-orders').textContent = todayOrders;
+            document.getElementById('available-orders').textContent = allOrders.length;
+        }
+        
+        // 应用筛选条件
+        function applyFilters() {
+            const district = document.getElementById('district-filter').value;
+            const grade = document.getElementById('grade-filter').value;
+            const subject = document.getElementById('subject-filter').value;
+            const method = document.getElementById('method-filter').value;
+            const searchTerm = document.getElementById('order-search').value.toLowerCase();
+            const sortBy = document.getElementById('sort-filter').value;
+            
+            // 筛选数据
+            filteredOrders = allOrders.filter(order => {
+                const matchesDistrict = !district || order.district === district;
+                const matchesGrade = !grade || order.grade === grade;
+                const matchesSubject = !subject || order.subject === subject;
+                const matchesMethod = !method || order.teachingMethod === method;
+                const matchesSearch = !searchTerm || 
+                    order.id.toLowerCase().includes(searchTerm) || 
+                    order.subject.toLowerCase().includes(searchTerm) || 
+                    order.district.toLowerCase().includes(searchTerm);
+                
+                return matchesDistrict && matchesGrade && matchesSubject && matchesMethod && matchesSearch;
+            });
+            
+            // 排序数据
+            sortOrders(sortBy);
+            
+            // 显示筛选后的订单
+            displayOrders();
+        }
+        
+        // 排序订单
+        function sortOrders(sortBy) {
+            switch(sortBy) {
+                case 'newest':
+                    filteredOrders.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
+                    break;
+                case 'salary-high':
+                    filteredOrders.sort((a, b) => b.salary - a.salary);
+                    break;
+                case 'salary-low':
+                    filteredOrders.sort((a, b) => a.salary - b.salary);
+                    break;
+                default:
+                    filteredOrders.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
             }
         }
-        function musicInBrowserHandler() {
-            setTimeout(function () {
-                musicPlay(true)
-            }, 0)
+        
+        // 显示订单
+        function displayOrders() {
+            const container = document.getElementById('orders-container');
+            
+            if (filteredOrders.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <h3>未找到匹配的家教信息</h3>
+                        <p>请尝试调整筛选条件或搜索关键词</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            filteredOrders.forEach(order => {
+                const orderCard = document.createElement('div');
+                orderCard.className = 'order-card';
+                orderCard.innerHTML = `
+                    <div class="card-header">
+                        <h3>${order.subject}辅导 - ${order.grade}
+                            <span class="order-id">${order.id}</span>
+                        </h3>
+                        <div>${order.teachingMethod} · ${order.district}</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="order-detail">
+                            <div class="detail-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="detail-text">
+                                <div class="detail-label">详细地址</div>
+                                <div>${order.address}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="order-detail">
+                            <div class="detail-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="detail-text">
+                                <div class="detail-label">学员情况</div>
+                                <div>${order.studentInfo}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="order-detail">
+                            <div class="detail-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="detail-text">
+                                <div class="detail-label">辅导时间</div>
+                                <div>${order.time}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="order-detail">
+                            <div class="detail-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="detail-text">
+                                <div class="detail-label">教员要求</div>
+                                <div>${order.teacherRequirement}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="salary">${order.salary}<span>元/小时</span></div>
+                        <button class="contact-btn" onclick="contactParent('${order.contact}', '${order.phone}')">
+                            <i class="fas fa-phone-alt"></i> 联系家长
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(orderCard);
+            });
         }
-        document.body.addEventListener('touchstart', musicInBrowserHandler);
-        document.body.addEventListener('click', musicInBrowserHandler);
-
-        $('#yhBtn').click(e => {
-            $('#yhBtn').hide()
-            setTimeout(() => {
-                start()
-                fireworks();
-            }, 3800) // 这里的5000 是5s指烟花延时时间
-            setTimeout(() => {
-                function audioAutoPlay() {
-                    var audio = document.getElementById('audioDom');
-                    audio.play();
-                }
-                audioAutoPlay();
-                // wishFun(); 想要展示祝福语--取消注释
-            }, 2000) // 这里的5000 是5s指音乐延时时间
-            console.log(updateConfig({ autoLaunch: true }));
-        })
-        function fireworks() {
-            $('.page_two').removeClass('hide');
+        
+        // 搜索订单
+        function searchOrders() {
+            applyFilters();
         }
-        function start() {
-
-            var text = [
-                "新年快乐鸭 王艳勤小公主🎆",
-                "祝愿小公主：",
-                "春去秋往万事胜意",
-                "山高水长终有回甘",
-                "万般熙攘化清风郎月",
-                "四方梦想皆如愿以偿",
-                "愿日子如曦光 温柔又安详~",
-                "你我赤诚且勇 敢欣喜也在望~",
-                'ʸᵒᵘ ᵃʳᵉ ᵗʰᵉ ᵒⁿˡʸ ᵇᵉˢᵗ ᶠᵒʳ ᵐᵉ.'
-            ]
-            var str = text.join('<br><br>')
-            var str_ = ''
-            var i = 0
-            var content = document.getElementById('contents')
-            var timer = setInterval(() => {
-                if (str_.length < str.length) {
-                    str_ += str[i++]
-                    content.innerHTML = '<p>' + str_ + '<span class="xx" style="opacity: 1;color: red;">❤</span></p>'                        //打印时加光标
-                } else {
-                    clearInterval(timer)
-                    content.innerHTML = '<p>' + str_ + '</p>'
-                }
-            }, 100)
+        
+        // 重置筛选条件
+        function resetFilters() {
+            document.getElementById('district-filter').value = '';
+            document.getElementById('grade-filter').value = '';
+            document.getElementById('subject-filter').value = '';
+            document.getElementById('method-filter').value = '';
+            document.getElementById('order-search').value = '';
+            document.getElementById('sort-filter').value = 'newest';
+            
+            applyFilters();
         }
+        
+        // 联系家长
+        function contactParent(contact, phone) {
+            alert(`联系人: ${contact}\n联系电话: ${phone}`);
+        }
+        
+        // 监听搜索框回车键
+        document.getElementById('order-search').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchOrders();
+            }
+        });
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', init);
     </script>
-    <script type="text/javascript" src="./js/snow.js"></script>
 </body>
-
 </html>
