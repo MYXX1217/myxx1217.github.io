@@ -534,7 +534,7 @@
             <button class="type-btn good-btn" onclick="filterByType('好单')">
                 <i class="fas fa-thumbs-up"></i> 好单
             </button>
-            <button class="type-btn reset-btn" onclick="resetTypeFilter()">
+            <button class="type-btn reset-btn" onclick="resetAllFilters()">
                 <i class="fas fa-redo"></i> 重置
             </button>
         </div>
@@ -627,6 +627,9 @@
             
             // 添加筛选条件变化监听
             setupFilterListeners();
+            
+            // 默认显示所有订单
+            filteredOrders = [...allOrders];
             
             // 默认按创建日期从新到旧排序
             sortOrders('newest');
@@ -737,12 +740,24 @@
             applyFilters();
         }
         
-        // 重置类型筛选
-        function resetTypeFilter() {
+        // 重置所有筛选条件
+        function resetAllFilters() {
+            // 重置类型筛选
             currentTypeFilter = '';
             document.querySelectorAll('.type-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
+            
+            // 重置下拉筛选
+            document.getElementById('district-filter').value = '';
+            document.getElementById('grade-filter').value = '';
+            document.getElementById('subject-filter').value = '';
+            document.getElementById('category-filter').value = '';
+            
+            // 重置搜索框
+            document.getElementById('order-search').value = '';
+            
+            // 应用筛选（将显示所有订单）
             applyFilters();
         }
         
@@ -762,9 +777,9 @@
                 const matchesType = !currentTypeFilter || order['类型'] === currentTypeFilter;
                 const matchesCategory = !category || order['接单类别'] === category;
                 const matchesSearch = !searchTerm || 
-                    order['单号'].toLowerCase().includes(searchTerm) || 
-                    order['科目'].toLowerCase().includes(searchTerm) || 
-                    order['区域'].toLowerCase().includes(searchTerm);
+                    (order['单号'] && order['单号'].toLowerCase().includes(searchTerm)) || 
+                    (order['科目'] && order['科目'].toLowerCase().includes(searchTerm)) || 
+                    (order['区域'] && order['区域'].toLowerCase().includes(searchTerm));
                 
                 return matchesDistrict && matchesGrade && matchesSubject && matchesType && matchesCategory && matchesSearch;
             });
