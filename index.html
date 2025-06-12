@@ -288,19 +288,23 @@
         }
         
         .order-detail {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            flex-wrap: wrap;
         }
         
         .detail-label {
             font-weight: 600;
             color: var(--secondary-color);
             font-size: 0.9rem;
-            margin-bottom: 3px;
+            margin-right: 5px;
+            white-space: nowrap;
         }
         
         .detail-text {
             font-size: 0.95rem;
             line-height: 1.5;
+            flex: 1;
         }
         
         .card-footer {
@@ -520,7 +524,7 @@
         </header>
         
         <div class="search-box">
-            <input type="text" id="order-search" placeholder="输入单号、科目或区域搜索">
+            <input type="text" id="order-search" placeholder="输入单号、电话、区域或关键词搜索">
             <button onclick="searchOrders()"><i class="fas fa-search"></i></button>
         </div>
         
@@ -676,12 +680,24 @@
                 // 将工作表转换为JSON
                 const jsonData = XLSX.utils.sheet_to_json(worksheet);
                 
-                // 处理数据
+                // 处理数据 - 强制从1开始重新编号
                 allOrders = jsonData.map((order, index) => {
+                    // 格式化日期为YYYY-MM-DD格式
+                    let createDate = order['创建日期'] || new Date().toISOString().split('T')[0];
+                    if (typeof createDate === 'string') {
+                        // 处理不同格式的日期
+                        if (createDate.includes('/')) {
+                            const parts = createDate.split('/');
+                            createDate = `${parts[0]}-${parts[1].padStart(2, '0')}-${parts[2].padStart(2, '0')}`;
+                        }
+                    } else if (createDate instanceof Date) {
+                        createDate = createDate.toISOString().split('T')[0];
+                    }
+                    
                     return {
-                        '序号': index + 1,
+                        '序号': index + 1,  // 这里确保从1开始
                         '单号': order['单号'] || '',
-                        '类型': order['类型'] || '', // 新单/加急单/好单
+                        '类型': order['类型'] || '',
                         '区域': order['区域'] || '',
                         '详细地址': order['详细地址'] || '',
                         '年级': order['年级'] || '',
@@ -692,9 +708,9 @@
                         '老师薪资': order['老师薪资'] || 0,
                         '联系人': order['联系人'] || '',
                         '联系电话': order['联系电话'] || '',
-                        '备注': order['备注'] || '', // 线上/线下等
-                        '接单类别': order['接单类别'] || '', // 暑假单/专职单/大学生单
-                        '创建日期': order['创建日期'] || new Date().toISOString().split('T')[0]
+                        '备注': order['备注'] || '',
+                        '接单类别': order['接单类别'] || '',
+                        '创建日期': createDate
                     };
                 });
                 
@@ -715,8 +731,12 @@
         
         // 更新统计数据
         function updateStatistics() {
-            const today = new Date().toISOString().split('T')[0];
-            const todayOrders = allOrders.filter(order => order['创建日期'] === today).length;
+            const today = new Date();
+            const todayStr = `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+            
+            const todayOrders = allOrders.filter(order => {
+                return order['创建日期'] === todayStr;
+            }).length;
             
             document.getElementById('today-orders').textContent = todayOrders;
             document.getElementById('available-orders').textContent = allOrders.length;
@@ -776,10 +796,15 @@
                 const matchesSubject = !subject || order['科目'] === subject;
                 const matchesType = !currentTypeFilter || order['类型'] === currentTypeFilter;
                 const matchesCategory = !category || order['接单类别'] === category;
+                
+                // 增强搜索功能，支持多字段搜索
                 const matchesSearch = !searchTerm || 
                     (order['单号'] && order['单号'].toLowerCase().includes(searchTerm)) || 
-                    (order['科目'] && order['科目'].toLowerCase().includes(searchTerm)) || 
-                    (order['区域'] && order['区域'].toLowerCase().includes(searchTerm));
+                    (order['联系电话'] && order['联系电话'].toLowerCase().includes(searchTerm)) || 
+                    (order['区域'] && order['区域'].toLowerCase().includes(searchTerm)) ||
+                    (order['学员情况'] && order['学员情况'].toLowerCase().includes(searchTerm)) ||
+                    (order['教员要求'] && order['教员要求'].toLowerCase().includes(searchTerm)) ||
+                    (order['备注'] && order['备注'].toLowerCase().includes(searchTerm));
                 
                 return matchesDistrict && matchesGrade && matchesSubject && matchesType && matchesCategory && matchesSearch;
             });
@@ -825,7 +850,7 @@
             
             container.innerHTML = '';
             
-            filteredOrders.forEach(order => {
+            filteredOrders.forEach((order, index) => {
                 const orderCard = document.createElement('div');
                 orderCard.className = 'order-card';
                 
@@ -852,12 +877,32 @@
                         </div>
                         
                         <div class="order-detail">
-                            <div class="detail-label">辅导地址</div>
-                            <div class="detail-text">${order['区域']} ${order['详细地址']}</div>
+                            <div class="detail-label">单号</div>
+                            <div class="detail-text">${order['单号']}</div>
                         </div>
                         
                         <div class="order-detail">
-                            <div class="detail-label">辅导科目</div>
+                            <div class="detail-label">类型</div>
+                            <div class="detail-text">${order['类型']}</div>
+                        </div>
+                        
+                        <div class="order-detail">
+                            <div class="detail-label">区域</div>
+                            <div class="detail-text">${order['区域']}</div>
+                        </div>
+                        
+                        <div class="order-detail">
+                            <div class="detail-label">详细地址</div>
+                            <div class="detail-text">${order['详细地址']}</div>
+                        </div>
+                        
+                        <div class="order-detail">
+                            <div class="detail-label">年级</div>
+                            <div class="detail-text">${order['年级']}</div>
+                        </div>
+                        
+                        <div class="order-detail">
+                            <div class="detail-label">科目</div>
                             <div class="detail-text">${order['科目']}</div>
                         </div>
                         
