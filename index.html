@@ -242,9 +242,44 @@
         }
         
         .card-header h3 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
             font-size: 1.2rem;
             font-weight: 600;
-            margin: 0;
+        }
+        
+        .order-id {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .order-type {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-right: 8px;
+        }
+        
+        .order-type.new {
+            background-color: var(--new-color);
+            color: white;
+        }
+        
+        .order-type.urgent {
+            background-color: var(--urgent-color);
+            color: white;
+        }
+        
+        .order-type.good {
+            background-color: var(--good-color);
+            color: white;
         }
         
         .card-content {
@@ -714,10 +749,24 @@
         // 更新统计数据
         function updateStatistics() {
             const today = new Date();
-            const todayStr = `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+            const todayStr = `${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}`;
             
             const todayOrders = allOrders.filter(order => {
-                return order['创建日期'] === todayStr;
+                // 兼容多种日期格式
+                const orderDate = order['创建日期'];
+                if (!orderDate) return false;
+                
+                // 处理YYYY/MM/DD格式
+                if (orderDate.includes('/')) {
+                    return orderDate === todayStr;
+                }
+                
+                // 处理YYYY-MM-DD格式
+                if (orderDate.includes('-')) {
+                    return orderDate === `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+                }
+                
+                return false;
             }).length;
             
             document.getElementById('today-orders').textContent = todayOrders;
@@ -769,7 +818,7 @@
             const grade = document.getElementById('grade-filter').value;
             const subject = document.getElementById('subject-filter').value;
             const category = document.getElementById('category-filter').value;
-            const searchTerm = document.getElementById('order-search').value.toLowerCase();
+            const searchTerm = document.getElementById('order-search').value.toLowerCase().trim();
             
             // 筛选数据
             filteredOrders = allOrders.filter(order => {
@@ -779,23 +828,28 @@
                 const matchesType = !currentTypeFilter || order['类型'] === currentTypeFilter;
                 const matchesCategory = !category || order['接单类别'] === category;
                 
-                // 增强搜索功能，支持多字段搜索
-                if (searchTerm) {
-                    const searchFields = [
-                        order['单号'],
-                        order['联系电话'],
-                        order['区域'],
-                        order['详细地址'],
-                        order['学员情况'],
-                        order['教员要求'],
-                        order['备注']
-                    ];
-                    
-                    return matchesDistrict && matchesGrade && matchesSubject && matchesType && matchesCategory && 
-                        searchFields.some(field => field && field.toLowerCase().includes(searchTerm));
+                // 如果没有搜索词，直接返回其他筛选条件
+                if (!searchTerm) {
+                    return matchesDistrict && matchesGrade && matchesSubject && matchesType && matchesCategory;
                 }
                 
-                return matchesDistrict && matchesGrade && matchesSubject && matchesType && matchesCategory;
+                // 增强搜索功能，支持多字段搜索
+                const searchFields = [
+                    order['单号'],
+                    order['联系电话'],
+                    order['区域'],
+                    order['详细地址'],
+                    order['学员情况'],
+                    order['教员要求'],
+                    order['备注']
+                ];
+                
+                // 检查是否有字段包含搜索词
+                const matchesSearch = searchFields.some(field => 
+                    field && field.toString().toLowerCase().includes(searchTerm)
+                );
+                
+                return matchesDistrict && matchesGrade && matchesSubject && matchesType && matchesCategory && matchesSearch;
             });
             
             // 默认按创建日期从新到旧排序
@@ -843,13 +897,25 @@
                 const orderCard = document.createElement('div');
                 orderCard.className = 'order-card';
                 
+                // 根据类型设置样式
+                let typeBadge = '';
+                if (order['类型'] === '新单') {
+                    typeBadge = `<span class="order-type new">新单</span>`;
+                } else if (order['类型'] === '加急单') {
+                    typeBadge = `<span class="order-type urgent">加急单</span>`;
+                } else if (order['类型'] === '好单') {
+                    typeBadge = `<span class="order-type good">好单</span>`;
+                }
+                
                 orderCard.innerHTML = `
                     <div class="card-header">
-                        <h3>${order['科目']}辅导 - ${order['年级']}</h3>
+                        <h3>${typeBadge} ${order['科目']}辅导 - ${order['年级']}
+                            <span class="order-id">${order['单号']}</span>
+                        </h3>
                     </div>
                     <div class="card-content">
                         <div class="order-detail">
-                            <div class="detail-label">区域</div>
+                            <div class="detail-label">详细地址</div>
                             <div class="detail-text">${order['区域']} ${order['详细地址']}</div>
                         </div>
                         
