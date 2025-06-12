@@ -148,13 +148,13 @@
             opacity: 0.9;
         }
         
-        .urgent-btn {
-            background-color: var(--urgent-color);
+        .new-btn {
+            background-color: var(--new-color);
             color: white;
         }
         
-        .new-btn {
-            background-color: var(--new-color);
+        .urgent-btn {
+            background-color: var(--urgent-color);
             color: white;
         }
         
@@ -267,13 +267,13 @@
             margin-right: 8px;
         }
         
-        .order-type.urgent {
-            background-color: var(--urgent-color);
+        .order-type.new {
+            background-color: var(--new-color);
             color: white;
         }
         
-        .order-type.new {
-            background-color: var(--new-color);
+        .order-type.urgent {
+            background-color: var(--urgent-color);
             color: white;
         }
         
@@ -546,11 +546,11 @@
         </div>
         
         <div class="type-filters">
-            <button class="type-btn urgent-btn" onclick="filterByType('加急单')">
-                <i class="fas fa-bolt"></i> 加急单
-            </button>
             <button class="type-btn new-btn" onclick="filterByType('新单')">
                 <i class="fas fa-star"></i> 新单
+            </button>
+            <button class="type-btn urgent-btn" onclick="filterByType('加急单')">
+                <i class="fas fa-bolt"></i> 加急单
             </button>
             <button class="type-btn good-btn" onclick="filterByType('好单')">
                 <i class="fas fa-thumbs-up"></i> 好单
@@ -699,8 +699,17 @@
                 
                 // 处理数据 - 强制从1开始重新编号
                 allOrders = jsonData.map((order, index) => {
-                    // 确保创建日期有值
-                    let createDate = order['创建日期'] || '';
+                    // 格式化日期为YYYY-MM-DD格式
+                    let createDate = order['创建日期'] || new Date().toISOString().split('T')[0];
+                    if (typeof createDate === 'string') {
+                        // 处理不同格式的日期
+                        if (createDate.includes('/')) {
+                            const parts = createDate.split('/');
+                            createDate = `${parts[0]}-${parts[1].padStart(2, '0')}-${parts[2].padStart(2, '0')}`;
+                        }
+                    } else if (createDate instanceof Date) {
+                        createDate = createDate.toISOString().split('T')[0];
+                    }
                     
                     return {
                         '序号': index + 1,
@@ -740,20 +749,24 @@
         // 更新统计数据
         function updateStatistics() {
             const today = new Date();
-            // 获取今天的日期字符串，格式为"YYYY/M/D"（如"2025/6/12"）
             const todayStr = `${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}`;
             
-            // 计算今日新增订单
             const todayOrders = allOrders.filter(order => {
-                // 检查创建日期是否与今天相同（支持"YYYY/M/D"和"YYYY/MM/DD"格式）
+                // 兼容多种日期格式
                 const orderDate = order['创建日期'];
                 if (!orderDate) return false;
                 
-                // 标准化日期格式（去除可能的0填充）
-                const normalizedOrderDate = orderDate.replace(/\b0/g, '');
-                const normalizedToday = todayStr.replace(/\b0/g, '');
+                // 处理YYYY/MM/DD格式
+                if (orderDate.includes('/')) {
+                    return orderDate === todayStr;
+                }
                 
-                return normalizedOrderDate === normalizedToday;
+                // 处理YYYY-MM-DD格式
+                if (orderDate.includes('-')) {
+                    return orderDate === `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+                }
+                
+                return false;
             }).length;
             
             document.getElementById('today-orders').textContent = todayOrders;
@@ -850,12 +863,7 @@
         function sortOrders(sortBy) {
             switch(sortBy) {
                 case 'newest':
-                    filteredOrders.sort((a, b) => {
-                        // 将日期转换为可比较的格式
-                        const dateA = new Date(a['创建日期'].replace(/\//g, '-'));
-                        const dateB = new Date(b['创建日期'].replace(/\//g, '-'));
-                        return dateB - dateA;
-                    });
+                    filteredOrders.sort((a, b) => new Date(b['创建日期']) - new Date(a['创建日期']));
                     break;
                 case 'salary-high':
                     filteredOrders.sort((a, b) => b['老师薪资'] - a['老师薪资']);
@@ -864,11 +872,7 @@
                     filteredOrders.sort((a, b) => a['老师薪资'] - b['老师薪资']);
                     break;
                 default:
-                    filteredOrders.sort((a, b) => {
-                        const dateA = new Date(a['创建日期'].replace(/\//g, '-'));
-                        const dateB = new Date(b['创建日期'].replace(/\//g, '-'));
-                        return dateB - dateA;
-                    });
+                    filteredOrders.sort((a, b) => new Date(b['创建日期']) - new Date(a['创建日期']));
             }
         }
         
@@ -959,6 +963,14 @@
                         <div class="order-detail">
                             <div class="detail-label">联系电话</div>
                             <div class="detail-text">${order['联系电话']}</div>
+                        </div>
+                        <div class="order-detail">
+                            <div class="detail-label">详细地址</div>
+                            <div class="detail-text">${order['详细地址']}</div>
+                        </div>
+                        <div class="order-detail">
+                            <div class="detail-label">创建日期</div>
+                            <div class="detail-text">${order['创建日期']}</div>
                         </div>
                     </div>
                 `;
