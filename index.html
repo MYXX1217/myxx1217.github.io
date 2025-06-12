@@ -546,11 +546,11 @@
         </div>
         
         <div class="type-filters">
-            <button class="type-btn new-btn" onclick="filterByType('新单')">
-                <i class="fas fa-star"></i> 新单
-            </button>
             <button class="type-btn urgent-btn" onclick="filterByType('加急单')">
                 <i class="fas fa-bolt"></i> 加急单
+            </button>
+			 <button class="type-btn new-btn" onclick="filterByType('新单')">
+                <i class="fas fa-star"></i> 新单
             </button>
             <button class="type-btn good-btn" onclick="filterByType('好单')">
                 <i class="fas fa-thumbs-up"></i> 好单
@@ -963,14 +963,6 @@
                         <div class="order-detail">
                             <div class="detail-label">联系电话</div>
                             <div class="detail-text">${order['联系电话']}</div>
-                        </div>
-                        <div class="order-detail">
-                            <div class="detail-label">详细地址</div>
-                            <div class="detail-text">${order['详细地址']}</div>
-                        </div>
-                        <div class="order-detail">
-                            <div class="detail-label">创建日期</div>
-                            <div class="detail-text">${order['创建日期']}</div>
                         </div>
                     </div>
                 `;
