@@ -238,52 +238,17 @@
         .card-header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 15px;
+            padding: 12px 15px;
         }
         
         .card-header h3 {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
             font-size: 1.2rem;
             font-weight: 600;
-        }
-        
-        .order-id {
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        
-        .order-type {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin-right: 8px;
-        }
-        
-        .order-type.new {
-            background-color: var(--new-color);
-            color: white;
-        }
-        
-        .order-type.urgent {
-            background-color: var(--urgent-color);
-            color: white;
-        }
-        
-        .order-type.good {
-            background-color: var(--good-color);
-            color: white;
+            margin: 0;
         }
         
         .card-content {
-            padding: 15px;
+            padding: 12px 15px;
             flex: 1;
         }
         
@@ -291,6 +256,7 @@
             margin-bottom: 8px;
             display: flex;
             flex-wrap: wrap;
+            align-items: baseline;
         }
         
         .detail-label {
@@ -303,15 +269,17 @@
         
         .detail-text {
             font-size: 0.95rem;
-            line-height: 1.5;
+            line-height: 1.4;
             flex: 1;
+            min-width: 0;
+            word-break: break-word;
         }
         
         .card-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
+            padding: 12px 15px;
             border-top: 1px solid #eee;
         }
         
@@ -333,7 +301,7 @@
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 6px;
             font-size: 0.9rem;
             cursor: pointer;
@@ -356,7 +324,7 @@
         }
         
         .privacy-info {
-            padding: 15px;
+            padding: 12px 15px;
             background-color: #f8f9fa;
             border-top: 1px solid #eee;
             display: none;
@@ -454,7 +422,8 @@
             }
             
             .orders-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 12px;
             }
             
             h1 {
@@ -465,8 +434,16 @@
                 font-size: 1.1rem;
             }
             
-            .order-id {
-                font-size: 0.7rem;
+            .detail-label {
+                font-size: 0.85rem;
+            }
+            
+            .detail-text {
+                font-size: 0.85rem;
+            }
+            
+            .salary {
+                font-size: 1.2rem;
             }
         }
         
@@ -484,7 +461,7 @@
             }
             
             .stat-item {
-                min-width: 100px;
+                min-width: 80px;
                 padding: 6px 10px;
             }
             
@@ -493,11 +470,16 @@
             }
             
             .card-content {
-                padding: 12px;
+                padding: 10px 12px;
             }
             
             .card-footer {
-                padding: 12px;
+                padding: 10px 12px;
+            }
+            
+            .orders-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
             }
         }
     </style>
@@ -524,7 +506,7 @@
         </header>
         
         <div class="search-box">
-            <input type="text" id="order-search" placeholder="输入单号、电话、区域或关键词搜索">
+            <input type="text" id="order-search" placeholder="搜索单号、电话、区域或关键词">
             <button onclick="searchOrders()"><i class="fas fa-search"></i></button>
         </div>
         
@@ -695,7 +677,7 @@
                     }
                     
                     return {
-                        '序号': index + 1,  // 这里确保从1开始
+                        '序号': index + 1,
                         '单号': order['单号'] || '',
                         '类型': order['类型'] || '',
                         '区域': order['区域'] || '',
@@ -798,15 +780,22 @@
                 const matchesCategory = !category || order['接单类别'] === category;
                 
                 // 增强搜索功能，支持多字段搜索
-                const matchesSearch = !searchTerm || 
-                    (order['单号'] && order['单号'].toLowerCase().includes(searchTerm)) || 
-                    (order['联系电话'] && order['联系电话'].toLowerCase().includes(searchTerm)) || 
-                    (order['区域'] && order['区域'].toLowerCase().includes(searchTerm)) ||
-                    (order['学员情况'] && order['学员情况'].toLowerCase().includes(searchTerm)) ||
-                    (order['教员要求'] && order['教员要求'].toLowerCase().includes(searchTerm)) ||
-                    (order['备注'] && order['备注'].toLowerCase().includes(searchTerm));
+                if (searchTerm) {
+                    const searchFields = [
+                        order['单号'],
+                        order['联系电话'],
+                        order['区域'],
+                        order['详细地址'],
+                        order['学员情况'],
+                        order['教员要求'],
+                        order['备注']
+                    ];
+                    
+                    return matchesDistrict && matchesGrade && matchesSubject && matchesType && matchesCategory && 
+                        searchFields.some(field => field && field.toLowerCase().includes(searchTerm));
+                }
                 
-                return matchesDistrict && matchesGrade && matchesSubject && matchesType && matchesCategory && matchesSearch;
+                return matchesDistrict && matchesGrade && matchesSubject && matchesType && matchesCategory;
             });
             
             // 默认按创建日期从新到旧排序
@@ -850,60 +839,23 @@
             
             container.innerHTML = '';
             
-            filteredOrders.forEach((order, index) => {
+            filteredOrders.forEach((order) => {
                 const orderCard = document.createElement('div');
                 orderCard.className = 'order-card';
                 
-                // 根据类型设置样式
-                let typeBadge = '';
-                if (order['类型'] === '新单') {
-                    typeBadge = `<span class="order-type new">新单</span>`;
-                } else if (order['类型'] === '加急单') {
-                    typeBadge = `<span class="order-type urgent">加急单</span>`;
-                } else if (order['类型'] === '好单') {
-                    typeBadge = `<span class="order-type good">好单</span>`;
-                }
-                
                 orderCard.innerHTML = `
                     <div class="card-header">
-                        <h3>${typeBadge} ${order['科目']}辅导 - ${order['年级']}
-                            <span class="order-id">${order['单号']}</span>
-                        </h3>
+                        <h3>${order['科目']}辅导 - ${order['年级']}</h3>
                     </div>
                     <div class="card-content">
                         <div class="order-detail">
-                            <div class="detail-label">序号</div>
-                            <div class="detail-text">${order['序号']}</div>
-                        </div>
-                        
-                        <div class="order-detail">
-                            <div class="detail-label">单号</div>
-                            <div class="detail-text">${order['单号']}</div>
-                        </div>
-                        
-                        <div class="order-detail">
-                            <div class="detail-label">类型</div>
-                            <div class="detail-text">${order['类型']}</div>
-                        </div>
-                        
-                        <div class="order-detail">
                             <div class="detail-label">区域</div>
-                            <div class="detail-text">${order['区域']}</div>
+                            <div class="detail-text">${order['区域']} ${order['详细地址']}</div>
                         </div>
                         
                         <div class="order-detail">
-                            <div class="detail-label">详细地址</div>
-                            <div class="detail-text">${order['详细地址']}</div>
-                        </div>
-                        
-                        <div class="order-detail">
-                            <div class="detail-label">年级</div>
-                            <div class="detail-text">${order['年级']}</div>
-                        </div>
-                        
-                        <div class="order-detail">
-                            <div class="detail-label">科目</div>
-                            <div class="detail-text">${order['科目']}</div>
+                            <div class="detail-label">年级/科目</div>
+                            <div class="detail-text">${order['年级']} ${order['科目']}</div>
                         </div>
                         
                         <div class="order-detail">
