@@ -218,8 +218,8 @@
         
         .orders-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 15px;
+            grid-template-columns: 1fr;
+            gap: 10px;
         }
         
         .order-card {
@@ -231,6 +231,8 @@
             border: 1px solid #eee;
             display: flex;
             flex-direction: column;
+            min-height: 200px;
+            max-height: 250px;
         }
         
         .order-card:hover {
@@ -241,7 +243,7 @@
         .card-header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 12px 15px;
+            padding: 10px 15px;
         }
         
         .card-header h3 {
@@ -249,7 +251,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 5px;
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 600;
         }
         
@@ -286,30 +288,16 @@
         }
         
         .card-content {
-            padding: 12px 15px;
+            padding: 10px 15px;
             flex: 1;
+            overflow-y: auto;
         }
         
         .order-detail {
-            margin-bottom: 8px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: baseline;
-        }
-        
-        .detail-label {
-            font-weight: 600;
-            color: var(--secondary-color);
+            font-family: "KaiTi", "楷体", serif;
             font-size: 0.9rem;
-            margin-right: 5px;
-            white-space: nowrap;
-        }
-        
-        .detail-text {
-            font-size: 0.95rem;
-            line-height: 1.4;
-            flex: 1;
-            min-width: 0;
+            line-height: 1.6;
+            white-space: pre-wrap;
             word-break: break-word;
         }
         
@@ -317,31 +305,22 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 15px;
+            padding: 10px 15px;
             border-top: 1px solid #eee;
+            font-size: 0.8rem;
         }
         
-        .salary {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: var(--accent-color);
-            display: flex;
-            align-items: baseline;
-        }
-        
-        .salary span {
-            font-size: 0.9rem;
+        .create-time {
             color: #7f8c8d;
-            margin-left: 3px;
         }
         
         .detail-btn {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 6px 10px;
+            padding: 5px 8px;
             border-radius: 6px;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -353,16 +332,8 @@
             background-color: #2980b9;
         }
         
-        .detail-btn i {
-            transition: transform 0.3s;
-        }
-        
-        .detail-btn.expanded i {
-            transform: rotate(180deg);
-        }
-        
         .privacy-info {
-            padding: 12px 15px;
+            padding: 10px 15px;
             background-color: #f8f9fa;
             border-top: 1px solid #eee;
             display: none;
@@ -440,29 +411,16 @@
                 font-size: 0.85rem;
             }
             
-            .orders-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-                gap: 12px;
-            }
-            
             h1 {
                 font-size: 1.5rem;
             }
             
             .card-header h3 {
-                font-size: 1.1rem;
+                font-size: 0.9rem;
             }
             
-            .detail-label {
+            .order-detail {
                 font-size: 0.85rem;
-            }
-            
-            .detail-text {
-                font-size: 0.85rem;
-            }
-            
-            .salary {
-                font-size: 1.2rem;
             }
         }
         
@@ -486,19 +444,6 @@
             
             .stat-value {
                 font-size: 1.1rem;
-            }
-            
-            .card-content {
-                padding: 10px 12px;
-            }
-            
-            .card-footer {
-                padding: 10px 12px;
-            }
-            
-            .orders-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
             }
         }
     </style>
@@ -525,18 +470,18 @@
         </header>
         
         <div class="search-box">
-            <input type="text" id="order-search" placeholder="搜索单号、电话、区域或关键词">
+            <input type="text" id="order-search" placeholder="搜索详细情况中的关键词">
             <button onclick="searchOrders()"><i class="fas fa-search"></i></button>
         </div>
         
         <div class="type-filters">
-            <button class="type-btn urgent-btn" onclick="filterByType('加急单')">
+            <button class="type-btn urgent-btn" onclick="filterByKeyword('加急单')">
                 <i class="fas fa-bolt"></i> 加急单
             </button>
-            <button class="type-btn new-btn" onclick="filterByType('新单')">
+            <button class="type-btn new-btn" onclick="filterByKeyword('新单')">
                 <i class="fas fa-star"></i> 新单
             </button>
-            <button class="type-btn good-btn" onclick="filterByType('好单')">
+            <button class="type-btn good-btn" onclick="filterByKeyword('好单')">
                 <i class="fas fa-thumbs-up"></i> 好单
             </button>
             <button class="type-btn reset-btn" onclick="resetAllFilters()">
@@ -545,40 +490,6 @@
         </div>
         
         <div class="filters-row">
-            <div class="filter-group">
-                <h3><i class="fas fa-location-dot"></i> 区域</h3>
-                <select id="district-filter">
-                    <option value="">全部区域</option>
-                    <option value="黄浦区">黄浦区</option>
-                    <option value="徐汇区">徐汇区</option>
-                    <option value="长宁区">长宁区</option>
-                    <option value="静安区">静安区</option>
-                    <option value="普陀区">普陀区</option>
-                    <option value="虹口区">虹口区</option>
-                    <option value="杨浦区">杨浦区</option>
-                    <option value="浦东新区">浦东新区</option>
-                    <option value="闵行区">闵行区</option>
-                    <option value="宝山区">宝山区</option>
-                    <option value="嘉定区">嘉定区</option>
-                    <option value="金山区">金山区</option>
-                    <option value="松江区">松江区</option>
-                    <option value="青浦区">青浦区</option>
-                    <option value="奉贤区">奉贤区</option>
-                    <option value="崇明区">崇明区</option>
-                </select>
-            </div>
-            
-            <div class="filter-group">
-                <h3><i class="fas fa-user-graduate"></i> 年级</h3>
-                <select id="grade-filter">
-                    <option value="">全部年级</option>
-                    <option value="幼儿">幼儿</option>
-                    <option value="小学">小学</option>
-                    <option value="初中">初中</option>
-                    <option value="高中">高中</option>
-                </select>
-            </div>
-            
             <div class="filter-group">
                 <h3><i class="fas fa-book"></i> 科目</h3>
                 <select id="subject-filter">
@@ -592,14 +503,11 @@
                     <option value="历史">历史</option>
                     <option value="地理">地理</option>
                     <option value="政治">政治</option>
-                    <option value="信息技术">信息技术</option>
-                    <option value="乐器">乐器</option>
-                    <option value="科学">科学</option>
                 </select>
             </div>
             
             <div class="filter-group">
-                <h3><i class="fas fa-tag"></i> 接单类别</h3>
+                <h3><i class="fas fa-tag"></i> 类别</h3>
                 <select id="category-filter">
                     <option value="">全部类别</option>
                     <option value="暑假单">暑假单</option>
@@ -609,19 +517,34 @@
             </div>
             
             <div class="filter-group">
-                <h3><i class="fas fa-school"></i> 院校附近</h3>
+                <h3><i class="fas fa-school"></i> 院校</h3>
                 <select id="school-filter">
-                    <option value="">全部</option>
-                    <option value="复旦大学">复旦大学</option>
-                    <option value="上海交通大学">上海交通大学</option>
-                    <option value="同济大学">同济大学</option>
-                    <option value="华东师范大学">华东师范大学</option>
-                    <option value="上海财经大学">上海财经大学</option>
-                    <option value="上海大学">上海大学</option>
-                    <option value="华东理工大学">华东理工大学</option>
-                    <option value="东华大学">东华大学</option>
-                    <option value="上海外国语大学">上海外国语大学</option>
-                    <option value="上海师范大学">上海师范大学</option>
+                    <option value="">全部院校</option>
+                    <option value="复旦">复旦</option>
+                    <option value="交大">交大</option>
+                    <option value="同济">同济</option>
+                    <option value="华师大">华师大</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <h3><i class="fas fa-location-dot"></i> 区域</h3>
+                <select id="district-filter">
+                    <option value="">全部区域</option>
+                    <option value="浦东">浦东</option>
+                    <option value="徐汇">徐汇</option>
+                    <option value="闵行">闵行</option>
+                    <option value="静安">静安</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <h3><i class="fas fa-user-graduate"></i> 年级</h3>
+                <select id="grade-filter">
+                    <option value="">全部年级</option>
+                    <option value="小学">小学</option>
+                    <option value="初中">初中</option>
+                    <option value="高中">高中</option>
                 </select>
             </div>
         </div>
@@ -637,14 +560,14 @@
         // 全局变量
         let allOrders = [];
         let filteredOrders = [];
-        let currentTypeFilter = '';
+        let currentKeywordFilter = '';
         
         // 初始化函数
         async function init() {
             // 设置当前日期
             setCurrentDate();
             
-            // 从GitHub加载数据
+            // 加载数据
             await loadDataFromGitHub();
             
             // 添加筛选条件变化监听
@@ -672,11 +595,11 @@
         
         // 设置筛选条件变化监听
         function setupFilterListeners() {
-            document.getElementById('district-filter').addEventListener('change', applyFilters);
-            document.getElementById('grade-filter').addEventListener('change', applyFilters);
             document.getElementById('subject-filter').addEventListener('change', applyFilters);
             document.getElementById('category-filter').addEventListener('change', applyFilters);
             document.getElementById('school-filter').addEventListener('change', applyFilters);
+            document.getElementById('district-filter').addEventListener('change', applyFilters);
+            document.getElementById('grade-filter').addEventListener('change', applyFilters);
         }
         
         // 从GitHub加载数据
@@ -702,7 +625,7 @@
                 // 处理数据 - 强制从1开始重新编号
                 allOrders = jsonData.map((order, index) => {
                     // 格式化日期为YYYY-MM-DD格式
-                    let createDate = order['创建日期'] || new Date().toISOString().split('T')[0];
+                    let createDate = order['创建时间'] || new Date().toISOString().split('T')[0];
                     if (typeof createDate === 'string') {
                         // 处理不同格式的日期
                         if (createDate.includes('/')) {
@@ -714,23 +637,11 @@
                     }
                     
                     return {
-                        '序号': index + 1,
+                        '序号': order['序号'] || index + 1,
                         '单号': order['单号'] || '',
-                        '类型': order['类型'] || '',
-                        '区域': order['区域'] || '',
-                        '详细地址': order['详细地址'] || '',
-                        '年级': order['年级'] || '',
-                        '科目': order['科目'] || '',
-                        '学员情况': order['学员情况'] || '',
-                        '辅导时间': order['辅导时间'] || '',
-                        '教员要求': order['教员要求'] || '',
-                        '老师薪资': order['老师薪资'] || 0,
-                        '联系人': order['联系人'] || '',
-                        '联系电话': order['联系电话'] || '',
-                        '备注': order['备注'] || '',
                         '接单类别': order['接单类别'] || '',
-                        '创建日期': createDate,
-                        '附近院校': order['附近院校'] || ''
+                        '详细情况': order['详细情况'] || '',
+                        '创建时间': createDate
                     };
                 });
                 
@@ -756,7 +667,7 @@
             
             const todayOrders = allOrders.filter(order => {
                 // 兼容多种日期格式
-                const orderDate = order['创建日期'];
+                const orderDate = order['创建时间'];
                 if (!orderDate) return false;
                 
                 // 处理YYYY/MM/DD格式
@@ -776,18 +687,18 @@
             document.getElementById('available-orders').textContent = allOrders.length;
         }
         
-        // 按类型筛选
-        function filterByType(type) {
-            currentTypeFilter = type;
+        // 按关键词筛选
+        function filterByKeyword(keyword) {
+            currentKeywordFilter = keyword;
             document.querySelectorAll('.type-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             
-            if (type === '新单') {
+            if (keyword === '新单') {
                 document.querySelector('.new-btn').classList.add('active');
-            } else if (type === '加急单') {
+            } else if (keyword === '加急单') {
                 document.querySelector('.urgent-btn').classList.add('active');
-            } else if (type === '好单') {
+            } else if (keyword === '好单') {
                 document.querySelector('.good-btn').classList.add('active');
             }
             
@@ -796,18 +707,18 @@
         
         // 重置所有筛选条件
         function resetAllFilters() {
-            // 重置类型筛选
-            currentTypeFilter = '';
+            // 重置关键词筛选
+            currentKeywordFilter = '';
             document.querySelectorAll('.type-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             
             // 重置下拉筛选
-            document.getElementById('district-filter').value = '';
-            document.getElementById('grade-filter').value = '';
             document.getElementById('subject-filter').value = '';
             document.getElementById('category-filter').value = '';
             document.getElementById('school-filter').value = '';
+            document.getElementById('district-filter').value = '';
+            document.getElementById('grade-filter').value = '';
             
             // 重置搜索框
             document.getElementById('order-search').value = '';
@@ -818,44 +729,40 @@
         
         // 应用筛选条件
         function applyFilters() {
-            const district = document.getElementById('district-filter').value;
-            const grade = document.getElementById('grade-filter').value;
             const subject = document.getElementById('subject-filter').value;
             const category = document.getElementById('category-filter').value;
             const school = document.getElementById('school-filter').value;
+            const district = document.getElementById('district-filter').value;
+            const grade = document.getElementById('grade-filter').value;
             const searchTerm = document.getElementById('order-search').value.toLowerCase().trim();
             
             // 筛选数据
             filteredOrders = allOrders.filter(order => {
-                const matchesDistrict = !district || order['区域'] === district;
-                const matchesGrade = !grade || order['年级'] === grade;
-                const matchesSubject = !subject || order['科目'] === subject;
-                const matchesType = !currentTypeFilter || order['类型'] === currentTypeFilter;
-                const matchesCategory = !category || order['接单类别'] === category;
-                const matchesSchool = !school || (order['附近院校'] && order['附近院校'].includes(school));
+                const matchesKeyword = !currentKeywordFilter || 
+                    (order['详细情况'] && order['详细情况'].includes(currentKeywordFilter));
+                const matchesSubject = !subject || 
+                    (order['详细情况'] && order['详细情况'].includes(subject));
+                const matchesCategory = !category || 
+                    (order['详细情况'] && order['详细情况'].includes(category));
+                const matchesSchool = !school || 
+                    (order['详细情况'] && order['详细情况'].includes(school));
+                const matchesDistrict = !district || 
+                    (order['详细情况'] && order['详细情况'].includes(district));
+                const matchesGrade = !grade || 
+                    (order['详细情况'] && order['详细情况'].includes(grade));
                 
                 // 如果没有搜索词，直接返回其他筛选条件
                 if (!searchTerm) {
-                    return matchesDistrict && matchesGrade && matchesSubject && matchesType && matchesCategory && matchesSchool;
+                    return matchesKeyword && matchesSubject && matchesCategory && 
+                           matchesSchool && matchesDistrict && matchesGrade;
                 }
                 
-                // 增强搜索功能，支持多字段搜索
-                const searchFields = [
-                    order['单号'],
-                    order['联系电话'],
-                    order['区域'],
-                    order['详细地址'],
-                    order['学员情况'],
-                    order['教员要求'],
-                    order['备注']
-                ];
+                // 检查详细情况是否包含搜索词
+                const matchesSearch = order['详细情况'] && 
+                    order['详细情况'].toLowerCase().includes(searchTerm);
                 
-                // 检查是否有字段包含搜索词
-                const matchesSearch = searchFields.some(field => 
-                    field && field.toString().toLowerCase().includes(searchTerm)
-                );
-                
-                return matchesDistrict && matchesGrade && matchesSubject && matchesType && matchesCategory && matchesSchool && matchesSearch;
+                return matchesKeyword && matchesSubject && matchesCategory && 
+                       matchesSchool && matchesDistrict && matchesGrade && matchesSearch;
             });
             
             // 默认按创建日期从新到旧排序
@@ -869,16 +776,13 @@
         function sortOrders(sortBy) {
             switch(sortBy) {
                 case 'newest':
-                    filteredOrders.sort((a, b) => new Date(b['创建日期']) - new Date(a['创建日期']));
+                    filteredOrders.sort((a, b) => new Date(b['创建时间']) - new Date(a['创建时间']));
                     break;
-                case 'salary-high':
-                    filteredOrders.sort((a, b) => b['老师薪资'] - a['老师薪资']);
-                    break;
-                case 'salary-low':
-                    filteredOrders.sort((a, b) => a['老师薪资'] - b['老师薪资']);
+                case 'oldest':
+                    filteredOrders.sort((a, b) => new Date(a['创建时间']) - new Date(b['创建时间']));
                     break;
                 default:
-                    filteredOrders.sort((a, b) => new Date(b['创建日期']) - new Date(a['创建日期']));
+                    filteredOrders.sort((a, b) => new Date(b['创建时间']) - new Date(a['创建时间']));
             }
         }
         
@@ -903,78 +807,35 @@
                 const orderCard = document.createElement('div');
                 orderCard.className = 'order-card';
                 
-                // 根据类型设置样式
+                // 根据关键词设置样式
                 let typeBadge = '';
-                if (order['类型'] === '新单') {
-                    typeBadge = `<span class="order-type new">新单</span>`;
-                } else if (order['类型'] === '加急单') {
+                if (order['详细情况'] && order['详细情况'].includes('加急单')) {
                     typeBadge = `<span class="order-type urgent">加急单</span>`;
-                } else if (order['类型'] === '好单') {
+                } else if (order['详细情况'] && order['详细情况'].includes('新单')) {
+                    typeBadge = `<span class="order-type new">新单</span>`;
+                } else if (order['详细情况'] && order['详细情况'].includes('好单')) {
                     typeBadge = `<span class="order-type good">好单</span>`;
-                }
-                
-                // 如果有附近院校信息，添加到详细地址后面
-                let address = order['详细地址'];
-                if (order['附近院校']) {
-                    address += ` (附近院校: ${order['附近院校']})`;
                 }
                 
                 orderCard.innerHTML = `
                     <div class="card-header">
-                        <h3>${typeBadge} ${order['科目']}辅导 - ${order['年级']}
-                            <span class="order-id">${order['单号']}</span>
+                        <h3>${typeBadge} 单号: ${order['单号']}
+                            <span class="order-id">${order['序号']}</span>
                         </h3>
                     </div>
                     <div class="card-content">
-                        <div class="order-detail">
-                            <div class="detail-label">详细地址</div>
-                            <div class="detail-text">${order['区域']} ${address}</div>
-                        </div>
-                        
-                        <div class="order-detail">
-                            <div class="detail-label">年级/科目</div>
-                            <div class="detail-text">${order['年级']} ${order['科目']}</div>
-                        </div>
-                        
-                        <div class="order-detail">
-                            <div class="detail-label">学员情况</div>
-                            <div class="detail-text">${order['学员情况']}</div>
-                        </div>
-                        
-                        <div class="order-detail">
-                            <div class="detail-label">辅导时间</div>
-                            <div class="detail-text">${order['辅导时间']}</div>
-                        </div>
-                        
-                        <div class="order-detail">
-                            <div class="detail-label">教员要求</div>
-                            <div class="detail-text">${order['教员要求']}</div>
-                        </div>
-                        
-                        <div class="order-detail">
-                            <div class="detail-label">接单类别</div>
-                            <div class="detail-text">${order['接单类别']}</div>
-                        </div>
-                        
-                        <div class="order-detail">
-                            <div class="detail-label">备注</div>
-                            <div class="detail-text">${order['备注']}</div>
-                        </div>
+                        <div class="order-detail">${order['详细情况'] || '无详细情况'}</div>
                     </div>
                     <div class="card-footer">
-                        <div class="salary">${order['老师薪资']}<span>元/小时</span></div>
+                        <div class="create-time">${formatDate(order['创建时间'])}</div>
                         <button class="detail-btn" onclick="toggleDetails(this)">
-                            <i class="fas fa-chevron-down"></i> 查看详情
+                            <i class="fas fa-ellipsis-h"></i> 更多
                         </button>
                     </div>
                     <div class="privacy-info">
                         <div class="order-detail">
-                            <div class="detail-label">联系人</div>
-                            <div class="detail-text">${order['联系人']}</div>
-                        </div>
-                        <div class="order-detail">
-                            <div class="detail-label">联系电话</div>
-                            <div class="detail-text">${order['联系电话']}</div>
+                            <div class="detail-label">接单类别:</div>
+                            <div class="detail-text">${order['接单类别'] || '无'}</div>
                         </div>
                     </div>
                 `;
@@ -983,19 +844,30 @@
             });
         }
         
+        // 格式化日期
+        function formatDate(dateStr) {
+            if (!dateStr) return '未知日期';
+            
+            try {
+                const date = new Date(dateStr);
+                return date.toLocaleDateString('zh-CN');
+            } catch (e) {
+                return dateStr;
+            }
+        }
+        
         // 切换详情显示
         function toggleDetails(button) {
             const card = button.closest('.order-card');
             const privacyInfo = card.querySelector('.privacy-info');
-            const icon = button.querySelector('i');
             
             privacyInfo.classList.toggle('show');
             button.classList.toggle('expanded');
             
             if (privacyInfo.classList.contains('show')) {
-                button.innerHTML = '<i class="fas fa-chevron-up"></i> 收起详情';
+                button.innerHTML = '<i class="fas fa-times"></i> 收起';
             } else {
-                button.innerHTML = '<i class="fas fa-chevron-down"></i> 查看详情';
+                button.innerHTML = '<i class="fas fa-ellipsis-h"></i> 更多';
             }
         }
         
