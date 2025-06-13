@@ -176,14 +176,26 @@
         
         .filters-row {
             display: flex;
-            gap: 5px;
+            gap: 8px;
             margin-bottom: 10px;
-            overflow: hidden;
+            width: 100%;
+            overflow-x: auto;
+            padding-bottom: 5px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .filters-row::-webkit-scrollbar {
+            height: 4px;
+        }
+        
+        .filters-row::-webkit-scrollbar-thumb {
+            background-color: rgba(0,0,0,0.2);
+            border-radius: 2px;
         }
         
         .filter-group {
             flex: 1;
-            min-width: 0;
+            min-width: 120px;
         }
         
         .filter-group h3 {
@@ -397,16 +409,9 @@
                 font-size: 0.8rem;
             }
             
-            .filters-row {
-                flex-wrap: wrap;
-            }
-            
-            .filter-group {
-                min-width: calc(50% - 5px);
-            }
-            
-            .card-content {
-                font-size: 0.85rem;
+            select {
+                font-size: 0.65rem;
+                padding: 4px 5px;
             }
         }
     </style>
