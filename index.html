@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
+        /* 样式部分保持不变，与之前完全一致 */
         :root {
             --primary-color: #3498db;
             --secondary-color: #2c3e50;
@@ -664,7 +665,6 @@
                         '序号': order['序号'] || index + 1,
                         '单号': order['单号'] || '',
                         '类型': order['类型'] || '', // 第三列类型
-                        '接单类别': order['接单类别'] || '',
                         '详细情况': order['详细情况'] || '',
                         '创建时间': createDate
                     };
@@ -765,11 +765,20 @@
             
             // 筛选数据
             filteredOrders = allOrders.filter(order => {
-                // 类型筛选和类别筛选是互斥的
+                // 类型筛选 - 在"类型"列中匹配
+                const matchesType = currentTypeFilter && 
+                    order['类型'] === currentTypeFilter;
+                
+                // 类别筛选 - 在"详细情况"列中搜索关键词
+                const matchesCategory = category && 
+                    order['详细情况'] && 
+                    order['详细情况'].includes(category);
+                
+                // 如果既没有类型筛选也没有类别筛选，或者有匹配的
                 const matchesTypeOrCategory = 
                     (!currentTypeFilter && !category) || 
-                    (currentTypeFilter && order['类型'] === currentTypeFilter) || 
-                    (category && order['接单类别'] === category);
+                    matchesType || 
+                    matchesCategory;
                 
                 // 其他筛选条件是"与"的关系
                 const matchesSubject = !subject || 
