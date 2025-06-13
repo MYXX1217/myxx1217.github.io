@@ -70,9 +70,9 @@
         
         .header-stats {
              display: flex;
-			 justify-content: center;
-			 width: 100%;
-			 gap: 15px;
+             justify-content: center;
+             width: 100%;
+             gap: 15px;
         }
         
         .header-date {
@@ -183,6 +183,7 @@
             overflow-x: auto;
             padding-bottom: 5px;
             -webkit-overflow-scrolling: touch;
+            flex-wrap: nowrap; /* 确保不换行 */
         }
         
         .filters-row::-webkit-scrollbar {
@@ -195,8 +196,9 @@
         }
         
         .filter-group {
-            flex: 1;
-            min-width: 120px;
+            flex: 1; /* 平均分配空间 */
+            min-width: 0; /* 允许缩小 */
+            flex-shrink: 0; /* 防止缩小 */
         }
         
         .filter-group h3 {
@@ -414,6 +416,22 @@
                 font-size: 0.65rem;
                 padding: 4px 5px;
             }
+            
+            /* 移动端筛选器调整 */
+            .filters-row {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none; /* 隐藏滚动条 */
+            }
+            
+            .filters-row::-webkit-scrollbar {
+                display: none; /* 隐藏滚动条 */
+            }
+            
+            .filter-group {
+                min-width: 100px; /* 移动端最小宽度 */
+                flex-shrink: 0; /* 防止缩小 */
+            }
         }
     </style>
 </head>
@@ -422,9 +440,9 @@
         <!-- 新版紧凑头部 -->
         <header class="compact-header">
              <h1>上海茁益家教信息平台</h1>
-			 <div class="header-top-line">
+             <div class="header-top-line">
                  <div class="header-date" id="current-date"></div>
-				 <div class="header-stats">
+                 <div class="header-stats">
                     <span>今日新增: <span class="stat-value" id="today-orders">0</span></span>
                     <span>可接单量: <span class="stat-value" id="available-orders">0</span></span>
                 </div>
