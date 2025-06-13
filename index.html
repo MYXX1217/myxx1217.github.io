@@ -39,63 +39,60 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 15px;
+            padding: 10px;
         }
         
-        header {
+        /* 新版头部设计 - 更紧凑 */
+        .compact-header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
+            height: auto;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
-        h1 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
+        .compact-header h1 {
+            font-size: 1.4rem;
+            margin: 5px 0;
             font-weight: 600;
         }
         
-        .banner {
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 12px;
-            border-radius: 8px;
-            margin: 12px 0;
-        }
-        
-        .banner p {
-            margin: 0;
-            font-size: 1rem;
-            line-height: 1.5;
-            text-align: center;
-        }
-        
-        .stats {
+        .header-meta {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .header-date {
+            text-align: left;
+        }
+        
+        .header-stats {
+            display: flex;
             gap: 15px;
-            flex-wrap: wrap;
-            margin-top: 12px;
         }
         
         .stat-item {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 8px 15px;
-            border-radius: 8px;
             text-align: center;
-            min-width: 100px;
         }
         
         .stat-value {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: bold;
         }
         
         .search-box {
             display: flex;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -105,13 +102,13 @@
             flex: 1;
             border: none;
             border-right: 1px solid #eee;
-            padding: 10px 15px;
-            font-size: 1rem;
+            padding: 8px 12px;
+            font-size: 0.95rem;
         }
         
         .search-box button {
             width: auto;
-            padding: 10px 15px;
+            padding: 8px 12px;
             background-color: var(--primary-color);
             color: white;
             border: none;
@@ -120,28 +117,28 @@
         
         .type-filters {
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 10px;
             flex-wrap: wrap;
         }
         
         .type-btn {
-            padding: 8px 15px;
-            border-radius: 8px;
+            padding: 6px 12px;
+            border-radius: 6px;
             border: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 5px;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
         
         .type-btn.active {
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
         }
         
         .type-btn:hover {
@@ -202,7 +199,7 @@
             width: 100%;
             padding: 5px;
             border: 1px solid #ddd;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 0.7rem;
             background-color: white;
             appearance: none;
@@ -224,52 +221,32 @@
         
         .order-card {
             background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             transition: all 0.3s;
             border: 1px solid #eee;
-            display: flex;
-            flex-direction: column;
-            min-height: 200px;
-            max-height: 250px;
+            padding: 12px;
         }
         
         .order-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
         }
         
         .card-header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 10px 15px;
-        }
-        
-        .card-header h3 {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 5px;
-            font-size: 1rem;
-            font-weight: 600;
-        }
-        
-        .order-id {
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
+            margin-bottom: 8px;
         }
         
         .order-type {
             display: inline-block;
             padding: 2px 8px;
             border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 500;
-            margin-right: 8px;
         }
         
         .order-type.new {
@@ -287,60 +264,35 @@
             color: white;
         }
         
-        .card-content {
-            padding: 10px 15px;
-            flex: 1;
-            overflow-y: auto;
+        .order-id {
+            font-weight: bold;
+            font-size: 1rem;
         }
         
-        .order-detail {
+        .copy-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            transition: all 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .card-content {
             font-family: "KaiTi", "楷体", serif;
             font-size: 0.9rem;
             line-height: 1.6;
             white-space: pre-wrap;
             word-break: break-word;
-        }
-        
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-            border-top: 1px solid #eee;
-            font-size: 0.8rem;
-        }
-        
-        .create-time {
-            color: #7f8c8d;
-        }
-        
-        .detail-btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 5px 8px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.3s;
-        }
-        
-        .detail-btn:hover {
-            background-color: #2980b9;
-        }
-        
-        .privacy-info {
-            padding: 10px 15px;
-            background-color: #f8f9fa;
-            border-top: 1px solid #eee;
-            display: none;
-        }
-        
-        .privacy-info.show {
-            display: block;
         }
         
         .no-results {
@@ -393,78 +345,63 @@
                 font-size: var(--mobile-font-size);
             }
             
+            .compact-header h1 {
+                font-size: 1.2rem;
+            }
+            
+            .header-meta {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .header-date, .header-stats {
+                width: 100%;
+                text-align: center;
+            }
+            
             .search-box input {
-                padding: 8px 12px;
+                padding: 7px 10px;
                 font-size: 0.9rem;
             }
             
             .search-box button {
-                padding: 8px 12px;
+                padding: 7px 10px;
             }
             
             .type-filters {
-                gap: 8px;
+                gap: 6px;
             }
             
             .type-btn {
-                padding: 7px 12px;
+                padding: 5px 10px;
+                font-size: 0.8rem;
+            }
+            
+            .card-content {
                 font-size: 0.85rem;
-            }
-            
-            h1 {
-                font-size: 1.5rem;
-            }
-            
-            .card-header h3 {
-                font-size: 0.9rem;
-            }
-            
-            .order-detail {
-                font-size: 0.85rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .container {
-                padding: 10px;
-            }
-            
-            header {
-                padding: 12px;
-            }
-            
-            .banner p {
-                font-size: 0.9rem;
-            }
-            
-            .stat-item {
-                min-width: 80px;
-                padding: 6px 10px;
-            }
-            
-            .stat-value {
-                font-size: 1.1rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
+        <!-- 新版紧凑头部 -->
+        <header class="compact-header">
             <h1>上海茁益家教信息平台</h1>
-            <div class="banner">
-                <p><i class="fas fa-info-circle"></i> 加急单、新单、好单成功率更高哦！！</p>
-                <p><i class="fas fa-info-circle"></i> 好单都离学校很近或者很高薪！</p>
-                <p id="current-date"></p>
-            </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <div class="stat-value" id="today-orders">0</div>
-                    <div>今日新增</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="available-orders">0</div>
-                    <div>可接单量</div>
+            <p style="margin: 5px 0; font-size: 0.9rem;">
+                <i class="fas fa-info-circle"></i> 加急单、新单、好单成功率更高哦！
+            </p>
+            <div class="header-meta">
+                <div class="header-date" id="current-date"></div>
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="today-orders">0</div>
+                        <div>今日新增</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="available-orders">0</div>
+                        <div>可接单量</div>
+                    </div>
                 </div>
             </div>
         </header>
@@ -475,13 +412,13 @@
         </div>
         
         <div class="type-filters">
-            <button class="type-btn urgent-btn" onclick="filterByKeyword('加急单')">
+            <button class="type-btn urgent-btn" onclick="filterByType('加急单')">
                 <i class="fas fa-bolt"></i> 加急单
             </button>
-            <button class="type-btn new-btn" onclick="filterByKeyword('新单')">
+            <button class="type-btn new-btn" onclick="filterByType('新单')">
                 <i class="fas fa-star"></i> 新单
             </button>
-            <button class="type-btn good-btn" onclick="filterByKeyword('好单')">
+            <button class="type-btn good-btn" onclick="filterByType('好单')">
                 <i class="fas fa-thumbs-up"></i> 好单
             </button>
             <button class="type-btn reset-btn" onclick="resetAllFilters()">
@@ -490,6 +427,19 @@
         </div>
         
         <div class="filters-row">
+            <div class="filter-group">
+                <h3><i class="fas fa-tag"></i> 类别</h3>
+                <select id="category-filter">
+                    <option value="">全部类别</option>
+                    <option value="暑假单">暑假单</option>
+                    <option value="专职单">专职单</option>
+                    <option value="大学生单">大学生单</option>
+                    <option value="加急单">加急单</option>
+                    <option value="好单">好单</option>
+                    <option value="新单">新单</option>
+                </select>
+            </div>
+            
             <div class="filter-group">
                 <h3><i class="fas fa-book"></i> 科目</h3>
                 <select id="subject-filter">
@@ -503,16 +453,6 @@
                     <option value="历史">历史</option>
                     <option value="地理">地理</option>
                     <option value="政治">政治</option>
-                </select>
-            </div>
-            
-            <div class="filter-group">
-                <h3><i class="fas fa-tag"></i> 类别</h3>
-                <select id="category-filter">
-                    <option value="">全部类别</option>
-                    <option value="暑假单">暑假单</option>
-                    <option value="专职单">专职单</option>
-                    <option value="大学生单">大学生单</option>
                 </select>
             </div>
             
@@ -560,7 +500,7 @@
         // 全局变量
         let allOrders = [];
         let filteredOrders = [];
-        let currentKeywordFilter = '';
+        let currentTypeFilter = '';
         
         // 初始化函数
         async function init() {
@@ -639,6 +579,7 @@
                     return {
                         '序号': order['序号'] || index + 1,
                         '单号': order['单号'] || '',
+                        '类型': order['类型'] || '', // 第三列类型
                         '接单类别': order['接单类别'] || '',
                         '详细情况': order['详细情况'] || '',
                         '创建时间': createDate
@@ -687,18 +628,18 @@
             document.getElementById('available-orders').textContent = allOrders.length;
         }
         
-        // 按关键词筛选
-        function filterByKeyword(keyword) {
-            currentKeywordFilter = keyword;
+        // 按类型筛选
+        function filterByType(type) {
+            currentTypeFilter = type;
             document.querySelectorAll('.type-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             
-            if (keyword === '新单') {
+            if (type === '新单') {
                 document.querySelector('.new-btn').classList.add('active');
-            } else if (keyword === '加急单') {
+            } else if (type === '加急单') {
                 document.querySelector('.urgent-btn').classList.add('active');
-            } else if (keyword === '好单') {
+            } else if (type === '好单') {
                 document.querySelector('.good-btn').classList.add('active');
             }
             
@@ -707,8 +648,8 @@
         
         // 重置所有筛选条件
         function resetAllFilters() {
-            // 重置关键词筛选
-            currentKeywordFilter = '';
+            // 重置类型筛选
+            currentTypeFilter = '';
             document.querySelectorAll('.type-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
@@ -738,12 +679,11 @@
             
             // 筛选数据
             filteredOrders = allOrders.filter(order => {
-                const matchesKeyword = !currentKeywordFilter || 
-                    (order['详细情况'] && order['详细情况'].includes(currentKeywordFilter));
+                const matchesType = !currentTypeFilter || order['类型'] === currentTypeFilter;
                 const matchesSubject = !subject || 
                     (order['详细情况'] && order['详细情况'].includes(subject));
                 const matchesCategory = !category || 
-                    (order['详细情况'] && order['详细情况'].includes(category));
+                    (order['接单类别'] && order['接单类别'].includes(category));
                 const matchesSchool = !school || 
                     (order['详细情况'] && order['详细情况'].includes(school));
                 const matchesDistrict = !district || 
@@ -753,7 +693,7 @@
                 
                 // 如果没有搜索词，直接返回其他筛选条件
                 if (!searchTerm) {
-                    return matchesKeyword && matchesSubject && matchesCategory && 
+                    return matchesType && matchesSubject && matchesCategory && 
                            matchesSchool && matchesDistrict && matchesGrade;
                 }
                 
@@ -761,7 +701,7 @@
                 const matchesSearch = order['详细情况'] && 
                     order['详细情况'].toLowerCase().includes(searchTerm);
                 
-                return matchesKeyword && matchesSubject && matchesCategory && 
+                return matchesType && matchesSubject && matchesCategory && 
                        matchesSchool && matchesDistrict && matchesGrade && matchesSearch;
             });
             
@@ -807,68 +747,54 @@
                 const orderCard = document.createElement('div');
                 orderCard.className = 'order-card';
                 
-                // 根据关键词设置样式
+                // 根据类型设置样式
                 let typeBadge = '';
-                if (order['详细情况'] && order['详细情况'].includes('加急单')) {
-                    typeBadge = `<span class="order-type urgent">加急单</span>`;
-                } else if (order['详细情况'] && order['详细情况'].includes('新单')) {
+                if (order['类型'] === '新单') {
                     typeBadge = `<span class="order-type new">新单</span>`;
-                } else if (order['详细情况'] && order['详细情况'].includes('好单')) {
+                } else if (order['类型'] === '加急单') {
+                    typeBadge = `<span class="order-type urgent">加急单</span>`;
+                } else if (order['类型'] === '好单') {
                     typeBadge = `<span class="order-type good">好单</span>`;
                 }
                 
                 orderCard.innerHTML = `
                     <div class="card-header">
-                        <h3>${typeBadge} 单号: ${order['单号']}
-                            <span class="order-id">${order['序号']}</span>
-                        </h3>
-                    </div>
-                    <div class="card-content">
-                        <div class="order-detail">${order['详细情况'] || '无详细情况'}</div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="create-time">${formatDate(order['创建时间'])}</div>
-                        <button class="detail-btn" onclick="toggleDetails(this)">
-                            <i class="fas fa-ellipsis-h"></i> 更多
+                        <div>${typeBadge}</div>
+                        <div class="order-id">${order['单号']}</div>
+                        <button class="copy-btn" onclick="copyOrderInfo(this)" data-content="${escapeHtml(order['详细情况'])}">
+                            <i class="fas fa-copy"></i> 复制
                         </button>
                     </div>
-                    <div class="privacy-info">
-                        <div class="order-detail">
-                            <div class="detail-label">接单类别:</div>
-                            <div class="detail-text">${order['接单类别'] || '无'}</div>
-                        </div>
-                    </div>
+                    <div class="card-content">${order['详细情况'] || '无详细情况'}</div>
                 `;
                 
                 container.appendChild(orderCard);
             });
         }
         
-        // 格式化日期
-        function formatDate(dateStr) {
-            if (!dateStr) return '未知日期';
-            
-            try {
-                const date = new Date(dateStr);
-                return date.toLocaleDateString('zh-CN');
-            } catch (e) {
-                return dateStr;
-            }
+        // 复制订单信息
+        function copyOrderInfo(button) {
+            const content = button.getAttribute('data-content');
+            navigator.clipboard.writeText(content).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+            });
         }
         
-        // 切换详情显示
-        function toggleDetails(button) {
-            const card = button.closest('.order-card');
-            const privacyInfo = card.querySelector('.privacy-info');
-            
-            privacyInfo.classList.toggle('show');
-            button.classList.toggle('expanded');
-            
-            if (privacyInfo.classList.contains('show')) {
-                button.innerHTML = '<i class="fas fa-times"></i> 收起';
-            } else {
-                button.innerHTML = '<i class="fas fa-ellipsis-h"></i> 更多';
-            }
+        // HTML转义
+        function escapeHtml(unsafe) {
+            if (!unsafe) return '';
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
         
         // 搜索订单
