@@ -421,7 +421,7 @@
         </header>
         
         <div class="search-box">
-            <input type="text" id="order-search" placeholder="搜索详细情况中的关键词">
+            <input type="text" id="order-search" placeholder="可输入关键词搜索...">
             <button onclick="searchOrders()"><i class="fas fa-search"></i></button>
         </div>
         
@@ -453,7 +453,28 @@
                     <option value="新单">新单</option>
                 </select>
             </div>
-            
+			
+            <div class="filter-group">
+                <h3><i class="fas fa-location-dot"></i> 区域</h3>
+                <select id="district-filter">
+                    <option value="">全部区域</option>
+                    <option value="浦东">浦东</option>
+                    <option value="徐汇">徐汇</option>
+                    <option value="闵行">闵行</option>
+                    <option value="静安">静安</option>
+                </select>
+            </div>
+			
+			<div class="filter-group">
+                <h3><i class="fas fa-user-graduate"></i> 年级</h3>
+                <select id="grade-filter">
+                    <option value="">全部年级</option>
+                    <option value="小学">小学</option>
+                    <option value="初中">初中</option>
+                    <option value="高中">高中</option>
+                </select>
+            </div>
+			
             <div class="filter-group">
                 <h3><i class="fas fa-book"></i> 科目</h3>
                 <select id="subject-filter">
@@ -473,34 +494,14 @@
             <div class="filter-group">
                 <h3><i class="fas fa-school"></i> 院校</h3>
                 <select id="school-filter">
-                    <option value="">全部院校</option>
+                    <option value="">临近院校</option>
                     <option value="复旦">复旦</option>
                     <option value="交大">交大</option>
                     <option value="同济">同济</option>
                     <option value="华师大">华师大</option>
                 </select>
             </div>
-            
-            <div class="filter-group">
-                <h3><i class="fas fa-location-dot"></i> 区域</h3>
-                <select id="district-filter">
-                    <option value="">全部区域</option>
-                    <option value="浦东">浦东</option>
-                    <option value="徐汇">徐汇</option>
-                    <option value="闵行">闵行</option>
-                    <option value="静安">静安</option>
-                </select>
-            </div>
-            
-            <div class="filter-group">
-                <h3><i class="fas fa-user-graduate"></i> 年级</h3>
-                <select id="grade-filter">
-                    <option value="">全部年级</option>
-                    <option value="小学">小学</option>
-                    <option value="初中">初中</option>
-                    <option value="高中">高中</option>
-                </select>
-            </div>
+ 
         </div>
         
         <div class="orders-grid" id="orders-container">
