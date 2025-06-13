@@ -46,13 +46,13 @@
         .compact-header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 15px;
+            padding: 12px 15px;
             border-radius: 8px;
             margin-bottom: 10px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
             height: auto;
-            min-height: 120px;
+            min-height: 110px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -62,18 +62,21 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            align-items: center;
         }
         
         .header-stats {
             text-align: left;
             display: flex;
             align-items: center;
+            gap: 15px;
         }
         
         .header-date {
             text-align: right;
+            font-size: 0.8rem;
         }
         
         .stat-value {
@@ -82,9 +85,18 @@
         }
         
         .compact-header h1 {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             margin: 5px 0;
             font-weight: 600;
+        }
+        
+        .compact-header p {
+            margin: 3px 0;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 10px;
         }
         
         .search-box {
@@ -342,6 +354,11 @@
                 font-size: var(--mobile-font-size);
             }
             
+            .compact-header {
+                min-height: 100px;
+                padding: 10px;
+            }
+            
             .compact-header h1 {
                 font-size: 1.2rem;
             }
@@ -349,11 +366,17 @@
             .header-top-line {
                 flex-direction: column;
                 gap: 5px;
+                font-size: 0.75rem;
             }
             
             .header-stats, .header-date {
                 width: 100%;
                 text-align: center;
+            }
+            
+            .compact-header p {
+                font-size: 0.7rem;
+                padding: 0;
             }
             
             .search-box input {
@@ -387,12 +410,12 @@
             <div class="header-top-line">
                 <div class="header-stats">
                     <span>今日新增: <span class="stat-value" id="today-orders">0</span></span>
-                    <span style="margin-left: 15px;">可接单量: <span class="stat-value" id="available-orders">0</span></span>
+                    <span>可接单量: <span class="stat-value" id="available-orders">0</span></span>
                 </div>
                 <div class="header-date" id="current-date"></div>
             </div>
             <h1>上海茁益家教信息平台</h1>
-            <p style="margin: 5px 0; font-size: 0.9rem;">
+            <p>
                 <i class="fas fa-info-circle"></i> 加急单、新单、好单成功率更高！好单更靠近学校或者很高薪哦！
             </p>
         </header>
