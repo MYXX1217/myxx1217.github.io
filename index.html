@@ -397,6 +397,14 @@
                 font-size: 0.8rem;
             }
             
+            .filters-row {
+                flex-wrap: wrap;
+            }
+            
+            .filter-group {
+                min-width: calc(50% - 5px);
+            }
+            
             .card-content {
                 font-size: 0.85rem;
             }
@@ -453,28 +461,41 @@
                     <option value="新单">新单</option>
                 </select>
             </div>
-			
+            
             <div class="filter-group">
                 <h3><i class="fas fa-location-dot"></i> 区域</h3>
                 <select id="district-filter">
                     <option value="">全部区域</option>
                     <option value="浦东">浦东</option>
+                    <option value="黄浦">黄浦</option>
                     <option value="徐汇">徐汇</option>
-                    <option value="闵行">闵行</option>
+                    <option value="长宁">长宁</option>
                     <option value="静安">静安</option>
+                    <option value="普陀">普陀</option>
+                    <option value="虹口">虹口</option>
+                    <option value="杨浦">杨浦</option>
+                    <option value="闵行">闵行</option>
+                    <option value="宝山">宝山</option>
+                    <option value="嘉定">嘉定</option>
+                    <option value="金山">金山</option>
+                    <option value="松江">松江</option>
+                    <option value="青浦">青浦</option>
+                    <option value="奉贤">奉贤</option>
+                    <option value="崇明">崇明</option>
                 </select>
             </div>
-			
-			<div class="filter-group">
+            
+            <div class="filter-group">
                 <h3><i class="fas fa-user-graduate"></i> 年级</h3>
                 <select id="grade-filter">
                     <option value="">全部年级</option>
+                    <option value="幼儿">幼儿</option>
                     <option value="小学">小学</option>
                     <option value="初中">初中</option>
                     <option value="高中">高中</option>
                 </select>
             </div>
-			
+            
             <div class="filter-group">
                 <h3><i class="fas fa-book"></i> 科目</h3>
                 <select id="subject-filter">
@@ -488,6 +509,9 @@
                     <option value="历史">历史</option>
                     <option value="地理">地理</option>
                     <option value="政治">政治</option>
+                    <option value="信息">信息</option>
+                    <option value="乐器">乐器</option>
+                    <option value="科学">科学</option>
                 </select>
             </div>
             
@@ -495,13 +519,41 @@
                 <h3><i class="fas fa-school"></i> 院校</h3>
                 <select id="school-filter">
                     <option value="">临近院校</option>
-                    <option value="复旦">复旦</option>
-                    <option value="交大">交大</option>
-                    <option value="同济">同济</option>
-                    <option value="华师大">华师大</option>
+                    <option value="交大">上海交通大学</option>
+                    <option value="复旦">复旦大学</option>
+                    <option value="同济">同济大学</option>
+                    <option value="华师大">华东师范大学</option>
+                    <option value="上财">上海财经大学</option>
+                    <option value="上科大">上海科技大学</option>
+                    <option value="华理">华东理工大学</option>
+                    <option value="上大">上海大学</option>
+                    <option value="上中医">上海中医药大学</option>
+                    <option value="东华">东华大学</option>
+                    <option value="上外">上海外国语大学</option>
+                    <option value="上理工">上海理工大学</option>
+                    <option value="华政">华东政法大学</option>
+                    <option value="上师大">上海师范大学</option>
+                    <option value="上体">上海体育大学</option>
+                    <option value="海洋">上海海洋大学</option>
+                    <option value="上外贸">上海对外经贸大学</option>
+                    <option value="海事">上海海事大学</option>
+                    <option value="电力">上海电力大学</option>
+                    <option value="政法">上海政法学院</option>
+                    <option value="工技大">上海工程技术大学</option>
+                    <option value="应技大">上海应用技术大学</option>
+                    <option value="立信">上海立信会计金融学院</option>
+                    <option value="海关">上海海关学院</option>
+                    <option value="健康医学院">上海健康医学院</option>
+                    <option value="电机">上海电机学院</option>
+                    <option value="二工大">上海第二工业大学</option>
+                    <option value="商学院">上海商学院</option>
+                    <option value="公安学院">上海公安学院</option>
+                    <option value="交大医学院">上海交通大学医学院</option>
+                    <option value="复旦医学院">复旦大学上海医学院</option>
+                    <option value="戏剧学院">上海戏剧学院</option>
+                    <option value="音乐学院">上海音乐学院</option>
                 </select>
             </div>
- 
         </div>
         
         <div class="orders-grid" id="orders-container">
@@ -551,10 +603,22 @@
         // 设置筛选条件变化监听
         function setupFilterListeners() {
             document.getElementById('subject-filter').addEventListener('change', applyFilters);
-            document.getElementById('category-filter').addEventListener('change', applyFilters);
+            document.getElementById('category-filter').addEventListener('change', function() {
+                // 当选择类别时，清除类型筛选
+                clearTypeFilter();
+                applyFilters();
+            });
             document.getElementById('school-filter').addEventListener('change', applyFilters);
             document.getElementById('district-filter').addEventListener('change', applyFilters);
             document.getElementById('grade-filter').addEventListener('change', applyFilters);
+        }
+
+        // 清除类型筛选
+        function clearTypeFilter() {
+            currentTypeFilter = '';
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
         }
         
         // 从GitHub加载数据
@@ -658,6 +722,8 @@
                 document.querySelector('.good-btn').classList.add('active');
             }
             
+            // 清除类别筛选
+            document.getElementById('category-filter').value = '';
             applyFilters();
         }
         
@@ -694,11 +760,15 @@
             
             // 筛选数据
             filteredOrders = allOrders.filter(order => {
-                const matchesType = !currentTypeFilter || order['类型'] === currentTypeFilter;
+                // 类型筛选和类别筛选是互斥的
+                const matchesTypeOrCategory = 
+                    (!currentTypeFilter && !category) || 
+                    (currentTypeFilter && order['类型'] === currentTypeFilter) || 
+                    (category && order['接单类别'] === category);
+                
+                // 其他筛选条件是"与"的关系
                 const matchesSubject = !subject || 
                     (order['详细情况'] && order['详细情况'].includes(subject));
-                const matchesCategory = !category || 
-                    (order['接单类别'] && order['接单类别'].includes(category));
                 const matchesSchool = !school || 
                     (order['详细情况'] && order['详细情况'].includes(school));
                 const matchesDistrict = !district || 
@@ -708,7 +778,7 @@
                 
                 // 如果没有搜索词，直接返回其他筛选条件
                 if (!searchTerm) {
-                    return matchesType && matchesSubject && matchesCategory && 
+                    return matchesTypeOrCategory && matchesSubject && 
                            matchesSchool && matchesDistrict && matchesGrade;
                 }
                 
@@ -716,7 +786,7 @@
                 const matchesSearch = order['详细情况'] && 
                     order['详细情况'].toLowerCase().includes(searchTerm);
                 
-                return matchesType && matchesSubject && matchesCategory && 
+                return matchesTypeOrCategory && matchesSubject && 
                        matchesSchool && matchesDistrict && matchesGrade && matchesSearch;
             });
             
