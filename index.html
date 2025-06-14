@@ -503,7 +503,7 @@
                     <option value="">全部类别</option>
                     <option value="暑假单">暑假单</option>
                     <option value="专职单">专职单</option>
-                    <option value="特长单">大学生单</option>
+                    <option value="特长单">特长单</option>
                     <option value="大学生单">大学生单</option>
                 </select>
             </div>
@@ -665,7 +665,8 @@
                     return {
                         '序号': order['序号'] || index + 1,
                         '单号': order['单号'] || '',
-                        '类型': order['类型'] || '', // 第三列类型
+                        '特殊类型': order['特殊类型'] || '', // 特殊类型列（加急单、新单、好单）
+                        '类型': order['类型'] || '', // 类型列（暑假单、专职单、特长单、大学生单）
                         '详细情况': order['详细情况'] || '',
                         '创建时间': createDate
                     };
@@ -703,7 +704,7 @@
             document.getElementById('available-orders').textContent = allOrders.length;
         }
         
-        // 按类型筛选
+        // 按类型筛选（特殊类型：加急单、新单、好单）
         function filterByType(type) {
             currentTypeFilter = type;
             document.querySelectorAll('.type-btn').forEach(btn => {
@@ -756,19 +757,19 @@
             
             // 筛选数据
             filteredOrders = allOrders.filter(order => {
-                // 类型筛选 - 在"类型"列中匹配
-                const matchesType = currentTypeFilter && 
-                    order['类型'] === currentTypeFilter;
+                // 特殊类型筛选 - 在"特殊类型"列中匹配
+                const matchesSpecialType = currentTypeFilter && 
+                    order['特殊类型'] === currentTypeFilter;
                 
-                // 类别筛选 - 在"详细情况"列中搜索关键词
+                // 类别筛选 - 在"类型"列中匹配
                 const matchesCategory = category && 
-                    order['详细情况'] && 
-                    order['详细情况'].includes(category);
+                    order['类型'] && 
+                    order['类型'] === category;
                 
-                // 如果既没有类型筛选也没有类别筛选，或者有匹配的
+                // 如果既没有特殊类型筛选也没有类别筛选，或者有匹配的
                 const matchesTypeOrCategory = 
                     (!currentTypeFilter && !category) || 
-                    matchesType || 
+                    matchesSpecialType || 
                     matchesCategory;
                 
                 // 其他筛选条件是"与"的关系
@@ -837,19 +838,25 @@
                 const orderCard = document.createElement('div');
                 orderCard.className = 'order-card';
                 
-                // 根据类型设置样式
+                // 根据特殊类型设置样式
                 let typeBadge = '';
-                if (order['类型'] === '新单') {
+                if (order['特殊类型'] === '新单') {
                     typeBadge = `<span class="order-type new">新单</span>`;
-                } else if (order['类型'] === '加急单') {
+                } else if (order['特殊类型'] === '加急单') {
                     typeBadge = `<span class="order-type urgent">加急单</span>`;
-                } else if (order['类型'] === '好单') {
+                } else if (order['特殊类型'] === '好单') {
                     typeBadge = `<span class="order-type good">好单</span>`;
+                }
+                
+                // 添加类别标签
+                let categoryLabel = '';
+                if (order['类型']) {
+                    categoryLabel = `<span style="font-size:0.7rem; color:#7f8c8d; margin-left:5px;">${order['类型']}</span>`;
                 }
                 
                 orderCard.innerHTML = `
                     <div class="card-header">
-                        <div>${typeBadge}</div>
+                        <div>${typeBadge}${categoryLabel}</div>
                         <div class="order-id">${order['单号']}</div>
                         <button class="copy-btn" onclick="copyOrderInfo(this)" data-content="${escapeHtml(order['详细情况'])}">
                             <i class="fas fa-copy"></i> 复制
