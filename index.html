@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
-        /* 样式部分保持不变，与之前完全一致 */
         :root {
             --primary-color: #3498db;
             --secondary-color: #2c3e50;
@@ -43,7 +42,6 @@
             padding: 10px;
         }
         
-        /* 新版头部设计 - 更紧凑 */
         .compact-header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
@@ -69,10 +67,10 @@
         }
         
         .header-stats {
-             display: flex;
-             justify-content: center;
-             width: 100%;
-             gap: 15px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            gap: 15px;
         }
         
         .header-date {
@@ -180,25 +178,14 @@
             gap: 8px;
             margin-bottom: 10px;
             width: 100%;
-            overflow-x: auto;
-            padding-bottom: 5px;
-            -webkit-overflow-scrolling: touch;
-            flex-wrap: nowrap; /* 确保不换行 */
-        }
-        
-        .filters-row::-webkit-scrollbar {
-            height: 4px;
-        }
-        
-        .filters-row::-webkit-scrollbar-thumb {
-            background-color: rgba(0,0,0,0.2);
-            border-radius: 2px;
+            flex-wrap: nowrap;
+            overflow: hidden;
         }
         
         .filter-group {
-            flex: 1; /* 平均分配空间 */
-            min-width: 0; /* 允许缩小 */
-            flex-shrink: 0; /* 防止缩小 */
+            flex: 1;
+            min-width: 0;
+            flex-basis: 0;
         }
         
         .filter-group h3 {
@@ -418,19 +405,17 @@
             }
             
             /* 移动端筛选器调整 */
-            .filters-row {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none; /* 隐藏滚动条 */
-            }
-            
-            .filters-row::-webkit-scrollbar {
-                display: none; /* 隐藏滚动条 */
-            }
-            
             .filter-group {
-                min-width: 100px; /* 移动端最小宽度 */
-                flex-shrink: 0; /* 防止缩小 */
+                min-width: 0;
+                flex-basis: 0;
+            }
+            
+            .filter-group h3 {
+                font-size: 0.65rem;
+            }
+            
+            .filter-group select {
+                font-size: 0.65rem;
             }
         }
     </style>
@@ -446,7 +431,6 @@
                     <span>今日新增: <span class="stat-value" id="today-orders">0</span></span>
                     <span>可接单量: <span class="stat-value" id="available-orders">0</span></span>
                 </div>
-               
             </div>
            
             <p>
@@ -675,10 +659,10 @@
                         // 处理不同格式的日期
                         if (createDate.includes('/')) {
                             const parts = createDate.split('/');
-                            createDate = `${parts[0]}-${parts[1].padStart(2, '0')}-${parts[2].padStart(2, '0')}`;
+                            createDate = `${parts[0]}/${parts[1]}/${parts[2]}`;
                         }
                     } else if (createDate instanceof Date) {
-                        createDate = createDate.toISOString().split('T')[0];
+                        createDate = `${createDate.getFullYear()}/${createDate.getMonth()+1}/${createDate.getDate()}`;
                     }
                     
                     return {
@@ -711,21 +695,11 @@
             const todayStr = `${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}`;
             
             const todayOrders = allOrders.filter(order => {
-                // 兼容多种日期格式
                 const orderDate = order['创建时间'];
                 if (!orderDate) return false;
                 
-                // 处理YYYY/MM/DD格式
-                if (orderDate.includes('/')) {
-                    return orderDate === todayStr;
-                }
-                
-                // 处理YYYY-MM-DD格式
-                if (orderDate.includes('-')) {
-                    return orderDate === `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
-                }
-                
-                return false;
+                // 直接比较日期字符串
+                return orderDate === todayStr;
             }).length;
             
             document.getElementById('today-orders').textContent = todayOrders;
