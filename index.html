@@ -39,43 +39,41 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 10px;
+            padding: 20px;
         }
         
         .compact-header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 12px 15px;
+            padding: 15px 20px;
             border-radius: 8px;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
-            height: auto;
-            min-height: 110px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
         
         .header-top-line {
             display: flex;
             justify-content: space-between;
-            width: 100%;
-            margin-bottom: 8px;
-            font-size: 0.8rem;
             align-items: center;
+            width: 100%;
+            margin-bottom: 12px;
         }
         
         .header-stats {
             display: flex;
             justify-content: center;
-            width: 100%;
-            gap: 15px;
+            gap: 25px;
+            font-size: 0.95rem;
+            flex: 1;
         }
         
         .header-date {
             text-align: right;
-            font-size: 0.6rem;
+            font-size: 0.95rem;
+            min-width: 180px;
+            margin-left: 20px;
+            white-space: nowrap;
         }
         
         .stat-value {
@@ -84,23 +82,22 @@
         }
         
         .compact-header h1 {
-            font-size: 1.3rem;
-            margin: 5px 0;
+            font-size: 1.6rem;
+            margin: 10px 0;
             font-weight: 600;
         }
         
         .compact-header p {
-            margin: 3px 0;
-            font-size: 0.75rem;
+            margin: 8px 0 0;
+            font-size: 0.9rem;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            padding: 0 10px;
         }
         
         .search-box {
             display: flex;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -110,31 +107,32 @@
             flex: 1;
             border: none;
             border-right: 1px solid #eee;
-            padding: 8px 12px;
-            font-size: 0.95rem;
+            padding: 12px 15px;
+            font-size: 1rem;
         }
         
         .search-box button {
             width: auto;
-            padding: 8px 12px;
+            padding: 12px 20px;
             background-color: var(--primary-color);
             color: white;
             border: none;
             cursor: pointer;
+            font-size: 1rem;
         }
         
         .type-filters {
             display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: 12px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
         
         .type-btn {
-            padding: 6px 12px;
+            padding: 8px 16px;
             border-radius: 6px;
             border: none;
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             font-weight: 500;
             cursor: pointer;
             display: flex;
@@ -175,8 +173,8 @@
         
         .filters-row {
             display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: 12px;
+            margin-bottom: 20px;
             width: 100%;
             flex-wrap: nowrap;
             overflow: hidden;
@@ -189,9 +187,9 @@
         }
         
         .filter-group h3 {
-            font-size: 0.7rem;
+            font-size: 0.85rem;
             color: var(--secondary-color);
-            margin-bottom: 3px;
+            margin-bottom: 5px;
             display: flex;
             align-items: center;
             gap: 5px;
@@ -203,22 +201,22 @@
         
         .filter-group h3 i {
             color: var(--primary-color);
-            font-size: 0.7rem;
+            font-size: 0.85rem;
         }
         
         select {
             width: 100%;
-            padding: 5px;
+            padding: 8px;
             border: 1px solid #ddd;
             border-radius: 6px;
-            font-size: 0.7rem;
+            font-size: 0.85rem;
             background-color: white;
             appearance: none;
             -webkit-appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
-            background-position: right 5px center;
-            background-size: 10px;
+            background-position: right 8px center;
+            background-size: 12px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -227,7 +225,7 @@
         .orders-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 10px;
+            gap: 20px;
         }
         
         .order-card {
@@ -237,7 +235,7 @@
             overflow: hidden;
             transition: all 0.3s;
             border: 1px solid #eee;
-            padding: 12px;
+            padding: 15px;
         }
         
         .order-card:hover {
@@ -249,14 +247,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         
         .order-type {
             display: inline-block;
-            padding: 2px 8px;
+            padding: 3px 10px;
             border-radius: 4px;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             font-weight: 500;
         }
         
@@ -277,16 +275,16 @@
         
         .order-id {
             font-weight: bold;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
         }
         
         .copy-btn {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 3px 8px;
+            padding: 5px 10px;
             border-radius: 4px;
-            font-size: 0.7rem;
+            font-size: 0.85rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -300,7 +298,7 @@
         
         .card-content {
             font-family: "KaiTi", "楷体", serif;
-            font-size: 0.9rem;
+            font-size: 1rem;
             line-height: 1.6;
             white-space: pre-wrap;
             word-break: break-word;
@@ -309,7 +307,7 @@
         .no-results {
             grid-column: 1 / -1;
             text-align: center;
-            padding: 30px 15px;
+            padding: 40px 20px;
         }
         
         .no-results i {
@@ -319,28 +317,28 @@
         }
         
         .no-results h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
             color: var(--secondary-color);
         }
         
         .no-results p {
             color: #7f8c8d;
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
         
         .loader {
             grid-column: 1 / -1;
             display: flex;
             justify-content: center;
-            padding: 30px;
+            padding: 40px;
         }
         
         .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(52, 152, 219, 0.2);
-            border-top: 4px solid var(--primary-color);
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(52, 152, 219, 0.2);
+            border-top: 5px solid var(--primary-color);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -356,83 +354,112 @@
                 font-size: var(--mobile-font-size);
             }
             
-            .compact-header {
-                min-height: 100px;
-                padding: 10px;
+            .container {
+                padding: 15px;
             }
             
-            .compact-header h1 {
-                font-size: 1.2rem;
+            .compact-header {
+                padding: 12px 15px;
             }
             
             .header-top-line {
                 flex-direction: column;
-                gap: 5px;
-                font-size: 0.75rem;
+                gap: 8px;
             }
             
-            .header-stats, .header-date {
+            .header-stats {
+                width: 100%;
+                gap: 15px;
+                font-size: 0.85rem;
+            }
+            
+            .header-date {
                 width: 100%;
                 text-align: center;
+                margin-left: 0;
+                min-width: auto;
+                font-size: 0.85rem;
+            }
+            
+            .compact-header h1 {
+                font-size: 1.3rem;
+                margin: 8px 0;
             }
             
             .compact-header p {
-                font-size: 0.7rem;
-                padding: 0;
+                font-size: 0.8rem;
+            }
+            
+            .search-box {
+                margin-bottom: 15px;
             }
             
             .search-box input {
-                padding: 7px 10px;
+                padding: 10px 12px;
                 font-size: 0.9rem;
             }
             
             .search-box button {
-                padding: 7px 10px;
+                padding: 10px 15px;
+                font-size: 0.9rem;
             }
             
             .type-filters {
-                gap: 6px;
+                gap: 8px;
+                margin-bottom: 15px;
             }
             
             .type-btn {
-                padding: 5px 10px;
-                font-size: 0.8rem;
+                padding: 6px 12px;
+                font-size: 0.85rem;
             }
             
-            select {
-                font-size: 0.65rem;
-                padding: 4px 5px;
+            .filters-row {
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-bottom: 15px;
             }
             
-            /* 移动端筛选器调整 */
             .filter-group {
+                flex: 1 0 calc(50% - 8px);
                 min-width: 0;
-                flex-basis: 0;
             }
             
             .filter-group h3 {
-                font-size: 0.65rem;
+                font-size: 0.75rem;
             }
             
-            .filter-group select {
-                font-size: 0.65rem;
+            select {
+                font-size: 0.75rem;
+                padding: 6px;
+            }
+            
+            .orders-grid {
+                gap: 15px;
+            }
+            
+            .order-card {
+                padding: 12px;
+            }
+            
+            .card-content {
+                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- 新版紧凑头部 -->
+        <!-- 优化后的头部 -->
         <header class="compact-header">
-             <h1>上海茁益家教信息平台</h1>
-             <div class="header-top-line">
-                 <div class="header-date" id="current-date"></div>
-                 <div class="header-stats">
+            <h1>上海茁益家教信息平台</h1>
+            <div class="header-top-line">
+                <div class="header-stats">
                     <span>今日新增: <span class="stat-value" id="today-orders">0</span></span>
                     <span>可接单量: <span class="stat-value" id="available-orders">0</span></span>
                 </div>
+                <div class="header-date" id="current-date"></div>
             </div>
-           
             <p>
                 <i class="fas fa-info-circle"></i> 加急单、新单、好单成功率更高！好单更靠近学校或者很高薪哦！
             </p>
