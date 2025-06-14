@@ -604,8 +604,7 @@
             const options = { 
                 year: 'numeric', 
                 month: 'long', 
-                day: 'numeric', 
-                weekday: 'long' 
+                day: 'numeric'
             };
             document.getElementById('current-date').textContent = now.toLocaleDateString('zh-CN', options);
         }
@@ -653,12 +652,12 @@
                 
                 // 处理数据 - 强制从1开始重新编号
                 allOrders = jsonData.map((order, index) => {
-                    // 格式化日期为YYYY-MM-DD格式
-                    let createDate = order['创建时间'] || new Date().toISOString().split('T')[0];
+                    // 保持日期格式为yyyy/m/d
+                    let createDate = order['创建日期'] || '';
                     if (typeof createDate === 'string') {
                         // 处理不同格式的日期
-                        if (createDate.includes('/')) {
-                            const parts = createDate.split('/');
+                        if (createDate.includes('-')) {
+                            const parts = createDate.split('-');
                             createDate = `${parts[0]}/${parts[1]}/${parts[2]}`;
                         }
                     } else if (createDate instanceof Date) {
