@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
+        /* 保持原有的CSS样式不变 */
         :root {
             --primary-color: #3498db;
             --secondary-color: #2c3e50;
@@ -560,8 +561,6 @@
                     <option value="科学">科学</option>
                 </select>
             </div>
-            
-            
         </div>
         
         <div class="orders-grid" id="orders-container">
@@ -588,11 +587,10 @@
             // 添加筛选条件变化监听
             setupFilterListeners();
             
-            // 默认显示所有订单
+            // 默认显示所有订单，保持Excel原始顺序
             filteredOrders = [...allOrders];
             
-            // 默认按创建日期从新到旧排序
-            sortOrders('newest');
+            // 显示订单（不进行排序）
             displayOrders();
         }
         
@@ -648,7 +646,7 @@
                 // 将工作表转换为JSON
                 const jsonData = XLSX.utils.sheet_to_json(worksheet);
                 
-                // 处理数据 - 强制从1开始重新编号
+                // 处理数据 - 保持Excel原始顺序
                 allOrders = jsonData.map((order, index) => {
                     // 保持日期格式为yyyy/m/d
                     let createDate = order['创建日期'] || '';
@@ -796,25 +794,8 @@
                        matchesSchool && matchesDistrict && matchesGrade && matchesSearch;
             });
             
-            // 默认按创建日期从新到旧排序
-            sortOrders('newest');
-            
-            // 显示筛选后的订单
+            // 显示筛选后的订单（保持原始顺序）
             displayOrders();
-        }
-        
-        // 排序订单
-        function sortOrders(sortBy) {
-            switch(sortBy) {
-                case 'newest':
-                    filteredOrders.sort((a, b) => new Date(b['创建时间']) - new Date(a['创建时间']));
-                    break;
-                case 'oldest':
-                    filteredOrders.sort((a, b) => new Date(a['创建时间']) - new Date(b['创建时间']));
-                    break;
-                default:
-                    filteredOrders.sort((a, b) => new Date(b['创建时间']) - new Date(a['创建时间']));
-            }
         }
         
         // 显示订单
